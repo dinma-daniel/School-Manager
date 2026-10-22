@@ -1,10 +1,8 @@
 /*
- * The two styles under review, each scoped to <html data-ui="…">. They work
- * mostly by redefining the tokens globals.css already runs on; the few things
- * tokens can't express live next to their components, under
- * :global([data-ui="…"]) in the CSS modules.
- *
- * Once one is chosen, its block moves into globals.css and this file goes.
+ * Overlay styles scoped to <html data-ui="…">. They work mostly by
+ * redefining the tokens globals.css already runs on; the few things tokens
+ * can't express live next to their components, under :global([data-ui="…"])
+ * in the CSS modules. Pleurat is the default look (`data-ui="pleurat"`).
  */
 
 :root {

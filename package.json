@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "dev:pleurat": "node scripts/dev-ui.mjs pleurat",
+    "dev:classic": "node scripts/dev-ui.mjs classic",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
