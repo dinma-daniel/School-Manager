@@ -26,3 +26,13 @@
   border: 1px solid currentColor;
   background: linear-gradient(to right, currentColor 50%, transparent 50%);
 }
+
+/* Phones: just the half-moon; the button's aria-label still names it. */
+@media (max-width: 520px) {
+  .toggle {
+    gap: 0;
+    padding: 0.45rem;
+    font-size: 0;
+    letter-spacing: 0;
+  }
+}

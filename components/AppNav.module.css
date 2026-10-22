@@ -205,3 +205,23 @@
 .link:hover .linkIcon {
   transform: rotate(-8deg) scale(1.08);
 }
+/*
+ * Phones: the mark stands in for the name and the bar tightens up. Last, and
+ * at the same weight as the style overrides above, so every style gets it.
+ */
+@media (max-width: 520px) {
+  .bar .inner {
+    gap: 0.5rem;
+  }
+
+  .bar .brand {
+    font-size: 0;
+    letter-spacing: 0;
+  }
+
+  .bar .link {
+    gap: 0.3rem;
+    padding: 0.4rem 0.45rem;
+    font-size: 14px;
+  }
+}
