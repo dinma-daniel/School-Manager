@@ -39,12 +39,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/*
           Blocking, and as early as the head allows: this sets data-theme from
           the stored preference before anything paints, so a dark-mode reader
-          never gets a white flash on load. Inline rather than a file so it
+          never gets a white flash on load. With nothing stored it's light,
+          whatever the OS prefers. Inline rather than a file so it
           costs no request.
         */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var s=localStorage.getItem("uniapp-theme");document.documentElement.setAttribute("data-theme",s==="light"||s==="dark"?s:matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}catch{document.documentElement.setAttribute("data-theme","light")}`,
+            __html: `try{var s=localStorage.getItem("uniapp-theme");document.documentElement.setAttribute("data-theme",s==="dark"?"dark":"light")}catch{document.documentElement.setAttribute("data-theme","light")}`,
           }}
         />
         {UI === "pleurat" && (
