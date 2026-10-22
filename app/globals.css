@@ -1,0 +1,230 @@
+/*
+ * Ground, type and rhythm for the whole planner.
+ *
+ * Warm paper rather than pure white, ink rather than black, one green accent,
+ * and hairline keylines instead of shadows. Both themes are defined here;
+ * public/theme.js sets data-theme before first paint so there's no flash.
+ */
+
+:root {
+  --paper: #faf5f5;
+  --card: #ffffff;
+  --sunken: #efeaea;
+  --chip: #f2f0f0;
+
+  --ink: #17160f;
+  --title: #313030;
+  --body: #434445;
+  --mute: #757575;
+  --faint: #8c8b82;
+
+  --rule: rgba(23, 22, 15, 0.1);
+  --keyline: rgba(23, 22, 15, 0.08);
+  --hover: rgba(23, 22, 15, 0.035);
+
+  --accent: #1e9e52;
+  --accent-soft: rgba(30, 158, 82, 0.1);
+  --alert: #b8442e;
+  --alert-soft: rgba(184, 68, 46, 0.09);
+  --caution: #c25e00;
+  --caution-soft: rgba(234, 120, 12, 0.1);
+
+  --dot: #b4b2b2;
+  --rail: #d6d3d3;
+
+  --col: 72rem;
+  --rail-x: -1.375rem;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+[data-theme="dark"] {
+  --paper: #191817;
+  --card: #242322;
+  --sunken: #211f1f;
+  --chip: #2b2928;
+
+  --ink: #f2efe9;
+  --title: #e8e6e3;
+  --body: #b9b8b6;
+  --mute: #8a8989;
+  --faint: #767575;
+
+  --rule: rgba(255, 255, 255, 0.12);
+  --keyline: rgba(255, 255, 255, 0.1);
+  --hover: rgba(255, 255, 255, 0.045);
+
+  --accent: #35c56d;
+  --accent-soft: rgba(53, 197, 109, 0.14);
+  --alert: #e2765c;
+  --alert-soft: rgba(226, 118, 92, 0.13);
+  --caution: #f5953a;
+  --caution-soft: rgba(245, 149, 58, 0.13);
+
+  --dot: #565454;
+  --rail: #4a4848;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--body);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  letter-spacing: -0.0064em;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+
+h1,
+h2,
+h3 {
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: -0.016em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--ink);
+  text-decoration-color: var(--rule);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.2s var(--ease-out);
+}
+
+a:hover {
+  text-decoration-color: var(--accent);
+}
+
+button {
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* The small uppercase mono label that marks every section and meta row. */
+.eyebrow {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+/*
+ * A pin board: the faint dot grid sticky notes sit on, like the dotted pages
+ * of a planner. Drawn in the ink colour so it follows every theme.
+ */
+.board {
+  background-color: var(--sunken);
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 18%, transparent) 1px, transparent 1.4px);
+  background-size: 18px 18px;
+  background-position: 9px 9px;
+  border-radius: var(--radius-card, 6px);
+}
+
+/* Handwriting, for the notes people write themselves. */
+.hand {
+  font-family: var(--font-hand), "Comic Sans MS", cursive;
+  letter-spacing: 0;
+}
+/* ===========================================================================
+ * Motion. Shared keyframes and classes, so every part of the app moves the
+ * same way. Fill mode is "backwards" throughout: the start state holds during
+ * any delay, and once a piece has arrived it hands back to its own styles —
+ * so hover lifts and tilts still work afterwards.
+ *
+ * Deliberately not gated on prefers-reduced-motion (the owner's call).
+ * ======================================================================== */
+
+:root {
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-power3: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --stagger: 70ms;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes line-up {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Something arriving: fades up, after its place in the queue (--i). */
+.enter {
+  animation: fade-up 0.8s var(--ease-expo) backwards;
+  animation-delay: calc(var(--i, 0) * var(--stagger));
+}
+
+/* A headline line rising from behind its own baseline. */
+.mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.mask > .line {
+  display: inline-block;
+  animation: line-up 1s var(--ease-expo) backwards;
+  animation-delay: calc(var(--i, 0) * 110ms);
+}
+
+/* Further down the page: waits until it scrolls into view (see <Reveal>). */
+.reveal {
+  transition:
+    opacity 0.9s var(--ease-expo),
+    transform 0.9s var(--ease-expo);
+}
+
+.reveal:not([data-shown]) {
+  opacity: 0;
+  transform: translateY(22px);
+}

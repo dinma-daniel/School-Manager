@@ -1,0 +1,614 @@
+/*
+ * The contents of one school, shared by the inline panel and the full view.
+ * Chips first, then the sections, then the two layouts that arrange them.
+ */
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+/* Sample data must never be mistakable for something extracted from a site. */
+.sample {
+  padding: 0.15rem 0.45rem;
+  border: 1px dashed var(--alert);
+  border-radius: 999px;
+  color: var(--alert);
+}
+
+/* A chip, so the stage never reads as part of the deadline next to it. */
+.status {
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  background: var(--chip);
+  color: var(--mute);
+}
+
+.status[data-status="applying"],
+.status[data-status="submitted"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.status[data-status="offer"] {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.status[data-status="rejected"] {
+  text-decoration: line-through;
+}
+
+.when[data-soon] {
+  color: var(--alert);
+}
+
+.summary {
+  color: var(--body);
+  font-size: 15px;
+}
+
+.apply {
+  justify-self: start;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s var(--ease-out);
+}
+
+.apply:hover {
+  background: var(--accent-soft);
+}
+
+.section {
+  display: grid;
+  gap: 0.6rem;
+}
+
+/* Dates ------------------------------------------------------------------ */
+
+.dates {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.dateRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px dotted var(--keyline);
+  font-size: 14px;
+}
+
+.dateRow:last-child {
+  border-bottom: none;
+}
+
+.dateLabel {
+  color: var(--body);
+}
+
+.dateNote {
+  display: block;
+  color: var(--faint);
+  font-size: 12px;
+}
+
+.dateValue {
+  flex: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.dateCount {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.dateCount[data-soon] {
+  color: var(--alert);
+}
+
+.datePast {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  text-transform: uppercase;
+}
+
+/* Steps ------------------------------------------------------------------ */
+
+.steps {
+  display: grid;
+  gap: 0.85rem;
+  counter-reset: step;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: 1.9rem 1fr;
+  gap: 0.2rem;
+  font-size: 14px;
+}
+
+.stepNum {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--faint);
+  padding-top: 0.2rem;
+}
+
+.stepTitle {
+  display: block;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.stepDetail {
+  display: block;
+  color: var(--body);
+  margin-top: 0.1rem;
+}
+
+/* Requirements ----------------------------------------------------------- */
+
+.groups {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.groupName {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.bullets {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 14px;
+}
+
+.bullets li {
+  position: relative;
+  padding-left: 0.95rem;
+}
+
+.bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 4px;
+  height: 1px;
+  background: var(--dot);
+}
+
+/* Gaps the extraction couldn't fill. Boxed and orange so they read as work
+   left for you, not as missing decoration. */
+.toCheck {
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--caution);
+  border-left-width: 3px;
+  border-radius: 6px;
+  background: var(--caution-soft);
+}
+
+.toCheck h3 {
+  color: var(--caution);
+}
+
+.gaps {
+  display: grid;
+  gap: 0.45rem;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.gaps li {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.gaps li::before {
+  content: "?";
+  position: absolute;
+  left: 0;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--caution);
+}
+
+/* Money ------------------------------------------------------------------ */
+
+.facts {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  font-size: 14px;
+}
+
+.fact {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px dotted var(--keyline);
+}
+
+.fact:last-child {
+  border-bottom: none;
+}
+
+.fact dt {
+  color: var(--body);
+  flex: none;
+}
+
+.fact dd {
+  margin: 0;
+  color: var(--ink);
+  text-align: right;
+}
+
+/* Scholarships ----------------------------------------------------------- */
+
+.scholarships {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.scholarship {
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--keyline);
+  border-radius: 6px;
+  background: var(--card);
+  font-size: 14px;
+}
+
+.scholarshipHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.scholarshipHead strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.amount {
+  flex: none;
+  color: var(--accent);
+  font-weight: 500;
+  text-align: right;
+}
+
+.scholarshipBody {
+  margin-top: 0.35rem;
+  color: var(--body);
+}
+
+.scholarshipFoot {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.55rem;
+}
+
+/* Watch-outs ------------------------------------------------------------- */
+
+.watchOuts {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 6px;
+  background: var(--alert-soft);
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.watchOuts li {
+  position: relative;
+  padding-left: 1rem;
+}
+
+.watchOuts li::before {
+  content: "!";
+  position: absolute;
+  left: 0;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--alert);
+}
+
+/* Contacts, notes, footer ------------------------------------------------ */
+
+.contacts {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 14px;
+}
+
+/* Your notes, written on a sticky note: ruled paper, your own hand. */
+.noteSticky {
+  max-width: 26rem;
+  padding: 0.6rem 0.8rem 0.5rem;
+}
+
+.note {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background:
+    repeating-linear-gradient(transparent 0 25px, rgba(44, 42, 36, 0.12) 25px 26px) 0 2px / 100% 26px local;
+  color: #2c2a24;
+  font-size: 19px;
+  line-height: 26px;
+  resize: vertical;
+}
+
+.note::placeholder {
+  color: rgba(44, 42, 36, 0.45);
+}
+
+.note:focus {
+  outline: none;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.25rem;
+}
+
+.statusPicker {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.statusPicker select {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--keyline);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+}
+
+/*
+ * Removing a school: plainly visible, plainly destructive — red outline and
+ * text, a bin icon — but still two steps. The first click turns it solid red
+ * and asks again; clicking away cancels.
+ */
+.remove {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.95rem;
+  border: 1px solid var(--alert);
+  border-radius: var(--radius, 6px);
+  background: var(--alert-soft);
+  color: var(--alert);
+  font-size: 14px;
+  font-weight: 500;
+  transition:
+    background 0.2s var(--ease-out),
+    color 0.2s var(--ease-out),
+    transform 0.2s var(--ease-out);
+}
+
+.remove:hover,
+.remove[data-confirm] {
+  background: var(--alert);
+  color: #fff;
+}
+
+.remove[data-confirm] {
+  animation: nudge 0.35s var(--ease-out);
+}
+
+@keyframes nudge {
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+.sources {
+  font-size: 13px;
+}
+
+.sources summary {
+  cursor: pointer;
+  color: var(--faint);
+}
+
+.sources ul {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  word-break: break-all;
+}
+
+.sources a {
+  color: var(--mute);
+  font-size: 12px;
+}
+
+.truncated {
+  margin-top: 0.5rem;
+  color: var(--faint);
+  font-size: 12px;
+}
+
+@media (max-width: 560px) {
+  .dateRow,
+  .fact {
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .dateValue,
+  .fact dd {
+    text-align: left;
+  }
+}
+
+/* Layouts ---------------------------------------------------------------- */
+
+/* Inline, under a list entry: one column, in reading order. */
+.stack {
+  display: grid;
+  gap: 1.4rem;
+}
+
+/*
+ * The full view. What you act on runs down the wide column; what you check
+ * against sits beside it and stays put while the steps scroll past.
+ */
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.column {
+  display: grid;
+  gap: 1.75rem;
+  min-width: 0;
+}
+
+.side {
+  position: sticky;
+  top: 5.5rem;
+  padding-left: 2rem;
+  border-left: 1px solid var(--keyline);
+}
+
+.columns .summary {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* The side column is too narrow for label-left, value-right rows once values
+   run to a sentence, so there the value sits under its label instead. */
+.side .dateRow,
+.side .fact {
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.side .dateValue,
+.side .fact dd {
+  text-align: left;
+}
+
+@media (max-width: 860px) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+
+  .side {
+    position: static;
+    padding-left: 0;
+    padding-top: 1.75rem;
+    border-left: none;
+    border-top: 1px solid var(--keyline);
+  }
+}
+
+/* ===========================================================================
+ * Styles under review (see app/ui-styles.css).
+ * ======================================================================== */
+
+/* AppSignal: rounder surfaces, and "start the application" as a lit yellow pill. */
+:global([data-ui="appsignal"]) .apply {
+  padding: 0.6rem 1.25rem;
+  border: none;
+  border-radius: 32px;
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+  font-weight: 600;
+  transition:
+    background 0.2s var(--ease-out),
+    color 0.2s var(--ease-out);
+}
+
+:global([data-ui="appsignal"]) .apply:hover {
+  background: var(--yellow, var(--accent));
+  color: #151515;
+}
+
+:global([data-ui="appsignal"]) .scholarship {
+  border-radius: var(--radius-card);
+}
+
+:global([data-ui="appsignal"]) .toCheck,
+:global([data-ui="appsignal"]) .watchOuts {
+  border-radius: var(--radius);
+}
+
+
+/* Pleurat: "start the application" is the amber button; everything else squares off. */
+:global([data-ui="pleurat"]) .apply {
+  padding: 0.7rem 1.25rem;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--amber);
+  color: #16140e;
+  transition: background 0.2s var(--ease-out);
+}
+
+:global([data-ui="pleurat"]) .apply:hover {
+  background: var(--amber-hover);
+}
+
+:global([data-ui="pleurat"]) .scholarship,
+:global([data-ui="pleurat"]) .toCheck,
+:global([data-ui="pleurat"]) .watchOuts {
+  border-radius: var(--radius-card);
+}
+
+:global([data-ui="pleurat"]) .statusPicker select {
+  border-radius: var(--radius);
+}
+/* Section labels carry a small icon ahead of the words. */
+.sectionLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.sectionIcon {
+  flex: none;
+  opacity: 0.85;
+}

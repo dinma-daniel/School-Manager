@@ -1,0 +1,217 @@
+/*
+ * Five columns, one per stage, filling the app's own width — no breaking out
+ * of the page. On screens too narrow for five, the board scrolls sideways
+ * inside the column, a stage at a time.
+ */
+
+.wrap {
+  margin-top: 1rem;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(11rem, 1fr));
+  gap: 0.75rem;
+  padding: 1rem 0.9rem 1.4rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+.column {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 0.9rem;
+  min-height: 16rem;
+  padding: 0.6rem 0.65rem 1rem;
+  border-radius: 10px;
+  scroll-snap-align: start;
+  transition: background 0.2s var(--ease-out);
+}
+
+/* While a note is dragged over it, the column takes a soft tint. */
+.column[data-over] {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.head {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0 0.2rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--ink);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.count {
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: var(--chip);
+  color: var(--mute);
+  font-size: 10px;
+}
+
+.hint {
+  color: var(--faint);
+  font-size: 17px;
+}
+
+.notes {
+  display: grid;
+  align-content: start;
+  gap: 1.35rem;
+  padding-top: 0.5rem;
+}
+
+.item {
+  cursor: grab;
+}
+
+.item[data-dragging] {
+  opacity: 0.45;
+}
+
+.open {
+  display: grid;
+  gap: 0.15rem;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  text-align: left;
+}
+
+.name {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.open:hover .name {
+  text-decoration: underline;
+  text-decoration-color: rgba(44, 42, 36, 0.35);
+  text-underline-offset: 3px;
+}
+
+.programme {
+  font-size: 12.5px;
+  line-height: 1.3;
+  opacity: 0.75;
+}
+
+.due {
+  margin-top: 0.55rem;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.due[data-soon] {
+  color: #b42318;
+  font-weight: 600;
+  opacity: 1;
+}
+
+.scribble {
+  display: -webkit-box;
+  margin-top: 0.5rem;
+  overflow: hidden;
+  font-size: 17px;
+  line-height: 1.15;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.moves {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.moves button {
+  width: 1.7rem;
+  height: 1.7rem;
+  border: none;
+  border-radius: 50%;
+  background: rgba(44, 42, 36, 0.08);
+  color: inherit;
+  font-size: 15px;
+  line-height: 1;
+  transition: background 0.2s var(--ease-out);
+}
+
+.moves button:hover:not(:disabled) {
+  background: rgba(44, 42, 36, 0.18);
+}
+
+.moves button:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.emptyCol {
+  display: grid;
+  place-items: center;
+  min-height: 6rem;
+  border: 1.5px dashed var(--rule);
+  border-radius: 8px;
+  color: var(--faint);
+  font-size: 13px;
+}
+
+@media (max-width: 720px) {
+  .board {
+    grid-template-columns: repeat(5, minmax(70%, 1fr));
+  }
+}
+
+/* Each stage gets a small icon in a tilted tile, like a badge stuck on the board. */
+.colIcon {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 6px;
+  background: var(--card);
+  box-shadow: 0 0 0 1px var(--keyline);
+  color: var(--ink);
+  transform: rotate(-6deg);
+  transition: transform 0.35s var(--ease-spring);
+}
+
+.column:nth-child(even) .colIcon {
+  transform: rotate(5deg);
+}
+
+.column:hover .colIcon {
+  transform: rotate(0deg) scale(1.1);
+}
+
+:global([data-ui="pleurat"]) .colIcon {
+  border-radius: 2px;
+}
+
+:global([data-ui="pleurat"]) .column:nth-child(4) .colIcon {
+  background: var(--amber);
+  color: #16140e;
+  box-shadow: none;
+}
+
+/* Pleurat: square columns, and an amber tint while dropping. */
+:global([data-ui="pleurat"]) .column {
+  border-radius: 3px;
+}
+
+:global([data-ui="pleurat"]) .column[data-over] {
+  background: color-mix(in srgb, var(--amber) 16%, transparent);
+}

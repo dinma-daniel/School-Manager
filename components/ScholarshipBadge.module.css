@@ -1,0 +1,26 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.badge[data-state="yes"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.badge[data-state="no"] {
+  background: var(--alert-soft);
+  color: var(--alert);
+}

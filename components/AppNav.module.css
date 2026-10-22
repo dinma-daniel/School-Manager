@@ -1,0 +1,207 @@
+/*
+ * A slim sticky bar: the name on the left, two places to go in the middle,
+ * the theme on the right. Lined up with the reading column below it.
+ */
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  border-bottom: 1px solid var(--keyline);
+  background: color-mix(in srgb, var(--paper) 86%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0.7rem 1.25rem;
+  box-sizing: content-box;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: auto;
+  color: var(--ink);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.mark {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.links {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.link {
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  color: var(--mute);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition:
+    color 0.2s var(--ease-out),
+    background 0.2s var(--ease-out);
+}
+
+.link:hover {
+  color: var(--ink);
+  background: var(--hover);
+}
+
+.link[data-active] {
+  color: var(--ink);
+  background: var(--chip);
+}
+
+@media (max-width: 520px) {
+  .brand {
+    font-size: 0;
+    letter-spacing: 0;
+  }
+
+  .mark {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+/* ===========================================================================
+ * Styles under review (see app/ui-styles.css).
+ * ======================================================================== */
+
+/* AppSignal: the bar spans the hairline-framed column; caps labels, yellow when here. */
+:global([data-ui="appsignal"]) .brand,
+:global([data-ui="appsignal"]) .link {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+:global([data-ui="appsignal"]) .inner {
+  max-width: calc(var(--col) + 2 * clamp(1.25rem, 4vw, 2.75rem));
+}
+
+:global([data-ui="appsignal"]) .mark {
+  background: var(--yellow, var(--accent));
+}
+
+:global([data-ui="appsignal"]) .link[data-active] {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+
+/* Pleurat: the bar is the top of the framed sheet; the margins stay ruled. */
+:global([data-ui="pleurat"]) .bar {
+  padding: 0 1.25rem;
+  border-bottom: none;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+:global([data-ui="pleurat"]) .inner {
+  box-sizing: border-box;
+  max-width: var(--col);
+  padding: 0.85rem clamp(1.25rem, 4vw, 2.75rem);
+  border-left: 1px solid var(--keyline);
+  border-right: 1px solid var(--keyline);
+  border-bottom: 1px solid var(--keyline);
+  background: var(--paper);
+}
+
+:global([data-ui="pleurat"]) .brand {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  text-transform: none;
+}
+
+:global([data-ui="pleurat"]) .mark {
+  width: 9px;
+  height: 9px;
+  border-radius: 0;
+  background: var(--amber);
+}
+
+:global([data-ui="pleurat"]) .link {
+  position: relative;
+  border-radius: 0;
+  color: var(--ink);
+  font-size: 15px;
+}
+
+:global([data-ui="pleurat"]) .link:hover {
+  background: none;
+  color: var(--mute);
+}
+
+:global([data-ui="pleurat"]) .link[data-active] {
+  background: none;
+}
+
+:global([data-ui="pleurat"]) .link[data-active]::after {
+  content: "";
+  position: absolute;
+  bottom: -0.15rem;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--amber);
+  transform: translateX(-50%);
+}
+/* Motion: the amber dot pops in under wherever you've just gone. */
+@keyframes dot-pop {
+  from {
+    transform: translateX(-50%) scale(0);
+  }
+}
+
+:global([data-ui="pleurat"]) .link[data-active]::after {
+  animation: dot-pop 0.5s var(--ease-spring) backwards;
+}
+/* Icons: small, muted, and a little lift when you're there. */
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.linkIcon {
+  flex: none;
+  opacity: 0.6;
+  transition:
+    opacity 0.2s var(--ease-out),
+    transform 0.35s var(--ease-spring);
+}
+
+.link:hover .linkIcon,
+.link[data-active] .linkIcon {
+  opacity: 1;
+}
+
+.link:hover .linkIcon {
+  transform: rotate(-8deg) scale(1.08);
+}

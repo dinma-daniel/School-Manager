@@ -1,0 +1,1499 @@
+
+> uni_app@0.1.0 dev:pleurat
+> node scripts/dev-ui.mjs pleurat
+
+▲ Next.js 16.3.5 (Turbopack)
+- Local:         http://localhost:3101
+- Network:       http://192.168.1.200:3101
+- Environments: .env.local
+✓ Ready in 453ms
+✓ Running next.config.ts took 35ms
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 837ms (next.js: 635ms, application-code: 202ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 63ms (next.js: 25ms, application-code: 38ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 25ms (next.js: 4ms, application-code: 21ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 22ms (next.js: 3ms, application-code: 18ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 36ms (next.js: 6ms, application-code: 30ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 4ms, application-code: 16ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 24ms (next.js: 4ms, application-code: 20ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 18ms (next.js: 3ms, application-code: 14ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 21ms (next.js: 6ms, application-code: 15ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 33ms (next.js: 6ms, application-code: 27ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 7ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 28ms (next.js: 10ms, application-code: 18ms)
+✓ Compiled in 17ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 9ms, application-code: 12ms)
+✓ Compiled in 11ms
+✓ Compiled in 22ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 31ms (next.js: 10ms, application-code: 20ms)
+✓ Compiled in 39ms
+[browser] ./components/CalendarView.tsx:263:23
+Error: Expected '</', got 'jsx text'
+  261 |                 ))
+  262 |               )}
+> 263 |             </section>
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 264 |
+      | ^
+> 265 |             {undated.length > 0 && (
+      | ^^^^^^^^^^^^
+  266 |               <section className={styles.agenda}>
+  267 |                 <h2 className="eyebrow">No fixed date</h2>{/* REVEAL_UNDATED */}
+  268 |                 <p className={styles.thin}>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/CalendarView.tsx
+    ./app/calendar/page.tsx 
+[browser] ./components/CalendarView.tsx:263:23
+Error: Expected '</', got 'jsx text'
+  261 |                 ))
+  262 |               )}
+> 263 |             </section>
+      |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 264 |
+      | ^
+> 265 |             {undated.length > 0 && (
+      | ^^^^^^^^^^^^
+  266 |               <section className={styles.agenda}>
+  267 |                 <h2 className="eyebrow">No fixed date</h2>{/* REVEAL_UNDATED */}
+  268 |                 <p className={styles.thin}>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/CalendarView.tsx
+    ./app/calendar/page.tsx 
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 27ms (next.js: 5ms, application-code: 22ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 32ms (next.js: 8ms, application-code: 24ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 16ms (next.js: 3ms, application-code: 14ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 39ms (next.js: 4ms, application-code: 35ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 33ms (next.js: 7ms, application-code: 25ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 23ms (next.js: 3ms, application-code: 20ms)
+✓ Compiled in 1ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 67ms (next.js: 19ms, application-code: 48ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 99ms
+ GET / 200 in 56ms (next.js: 16ms, application-code: 40ms)
+✓ Compiled in 26ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 79ms (next.js: 21ms, application-code: 57ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 21ms
+ GET / 200 in 45ms (next.js: 13ms, application-code: 31ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 236ms
+ GET / 200 in 56ms (next.js: 17ms, application-code: 39ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 43ms
+ GET / 200 in 52ms (next.js: 15ms, application-code: 37ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 47ms
+ GET / 200 in 60ms (next.js: 16ms, application-code: 44ms)
+[browser] ./components/Planner.tsx:192:10
+Error: Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  190 |             </StickyNote>
+  191 |           </section>
+> 192 |         )}
+      |          ^
+  193 |
+  194 |         <footer className={styles.footer}>
+  195 |           <p>
+
+Parsing ecmascript source code failed
+
+Import trace:
+  Server Component:
+    ./components/Planner.tsx
+    ./app/page.tsx 
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 21ms
+✓ Compiled in 69ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⨯ ReferenceError: TriangleAlert is not defined
+    at Module.eval (components\SchoolDetails.tsx:36:22)
+    at module evaluation (C:\Users\user\Documents\coding\uni_app\.next-pleurat\dev\server\chunks\ssr\_06svz-z._.js:3091:154)
+    at Module.eval (components\Planner.tsx:9:1)
+  34 | /** One small icon per kind of section, matched on its label. */
+  35 | const SECTION_ICONS: [RegExp, LucideIcon][] = [
+> 36 |   [/^easy to miss/i, TriangleAlert],
+     |                      ^
+  37 |   [/^dates|deadline/i, CalendarDays],
+  38 |   [/^start/i, Clock],
+  39 |   [/^how to apply/i, ListOrdered], {
+  digest: '2412518010'
+}
+ GET / 500 in 920ms (next.js: 5ms, application-code: 915ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+[browser] Encountered a script tag while rendering React component. Scripts inside React components are never executed when rendering on the client. Consider using template tag instead (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template). 
+[browser] Uncaught Error: Module [project]/node_modules/lucide-react/dist/esm/icons/award.js [app-client] (ecmascript) <export default as Award> was instantiated because it was required from module [project]/components/SchoolDetails.tsx [app-client] (ecmascript), but the module factory is not available.
+This is often caused by a stale browser cache, misconfigured Cache-Control headers, or a service worker serving outdated responses.
+To fix this, make sure your Cache-Control headers allow revalidation of chunks and review your service worker configuration. As an immediate workaround, try hard-reloading the page, clearing the browser cache, or unregistering any service workers.
+    at <unknown> (components/SchoolDetails.tsx:3:1)
+    at <unknown> (components/SchoolEntry.tsx:5:1)
+    at <unknown> (components/Planner.tsx:9:1)
+    at Home (app\page.tsx:4:10)
+  1 | "use client";
+  2 |
+> 3 | import {
+    | ^
+  4 |   Award,
+  5 |   CalendarDays,
+  6 |   CircleHelp,
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 108ms (next.js: 14ms, application-code: 93ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 37ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 42ms (next.js: 12ms, application-code: 30ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 41ms
+ GET / 200 in 79ms (next.js: 10ms, application-code: 69ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 78ms (next.js: 12ms, application-code: 66ms)
+✓ Compiled in 49ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 103ms
+ GET / 200 in 82ms (next.js: 9ms, application-code: 73ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 40ms (next.js: 11ms, application-code: 29ms)
+✓ Compiled in 33ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⨯ ReferenceError: Lightbulb is not defined
+    at Module.eval (components\SchoolBoard.tsx:14:16)
+    at Module.eval (components\Planner.tsx:12:1)
+  12 |
+  13 | const ICON: Record<Status, LucideIcon> = {
+> 14 |   considering: Lightbulb,
+     |                ^
+  15 |   applying: PenLine,
+  16 |   submitted: Send,
+  17 |   offer: PartyPopper, {
+  digest: '2163905565'
+}
+ GET / 500 in 101ms (next.js: 6ms, application-code: 95ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 122ms (next.js: 14ms, application-code: 109ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 60ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 49ms (next.js: 15ms, application-code: 34ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 27ms
+ GET / 200 in 50ms (next.js: 12ms, application-code: 37ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 32ms
+ GET / 200 in 58ms (next.js: 21ms, application-code: 37ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 38ms (next.js: 6ms, application-code: 32ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 42ms (next.js: 7ms, application-code: 35ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 88ms (next.js: 5ms, application-code: 83ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 38ms (next.js: 7ms, application-code: 30ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 48ms (next.js: 7ms, application-code: 40ms)
+✓ Compiled in 33ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 49ms (next.js: 14ms, application-code: 35ms)
+[browser] Uncaught ReferenceError: SectionIcon is not defined
+    at Section (components/SchoolDetails.tsx:38:10)
+    at SchoolDetails (components/SchoolDetails.tsx:126:100)
+    at SchoolEntry (components/SchoolEntry.tsx:45:23)
+    at Planner/<.children<.children<.children<.children<.children< (components/Planner.tsx:164:41)
+    at Planner (components/Planner.tsx:164:30)
+    at Home (app\page.tsx:4:10)
+  36 |     <section className={className ? `${styles.section} ${className}` : styles.section}>
+  37 |       <h3 className={`eyebrow ${styles.sectionLabel}`}>
+> 38 |         <SectionIcon label={label} />
+     |          ^
+  39 |         {label}
+  40 |       </h3>
+  41 |       {children}
+✓ Compiled in 55ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 62ms (next.js: 9ms, application-code: 53ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+[browser] Uncaught ReferenceError: createElement is not defined
+    at SectionIcon (components/SchoolDetails.tsx:62:3)
+    at Section (components/SchoolDetails.tsx:38:9)
+    at SchoolDetails (components/SchoolDetails.tsx:137:5)
+    at SchoolEntry (components/SchoolEntry.tsx:51:9)
+    at Planner/<.children<.children<.children<.children<.children< (components/Planner.tsx:166:19)
+    at Planner (components/Planner.tsx:165:24)
+    at Home (app\page.tsx:4:10)
+  60 | function SectionIcon({ label }: { label: string }) {
+  61 |   const icon = SECTION_ICONS.find(([re]) => re.test(label))?.[1];
+> 62 |   return icon
+     |   ^
+  63 |     ? createElement(icon, { className: styles.sectionIcon, size: 13, strokeWidth: 2, "aria-hidden": true })
+  64 |     : null;
+  65 | }
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 96ms
+ GET / 200 in 60ms (next.js: 13ms, application-code: 47ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 85ms (next.js: 8ms, application-code: 77ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 122ms (next.js: 18ms, application-code: 104ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 62ms (next.js: 9ms, application-code: 53ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 49ms (next.js: 6ms, application-code: 43ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 31ms (next.js: 7ms, application-code: 24ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 25ms (next.js: 5ms, application-code: 20ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 302ms (next.js: 159ms, application-code: 143ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 126ms
+✓ Compiled in 7ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 26ms (next.js: 4ms, application-code: 22ms)
+✓ Compiled in 226ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 41ms (next.js: 14ms, application-code: 27ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 30ms (next.js: 8ms, application-code: 22ms)
+✓ Compiled in 30ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 39ms (next.js: 3ms, application-code: 36ms)
+✓ Compiled in 12ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 35ms (next.js: 10ms, application-code: 25ms)
+✓ Compiled in 26ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 28ms (next.js: 9ms, application-code: 20ms)
+✓ Compiled in 44ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 25ms (next.js: 8ms, application-code: 17ms)
+✓ Compiled in 21ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 24ms (next.js: 3ms, application-code: 21ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 29ms (next.js: 5ms, application-code: 23ms)
+✓ Compiled in 7ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 25ms (next.js: 3ms, application-code: 22ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 21ms (next.js: 4ms, application-code: 17ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 16ms (next.js: 4ms, application-code: 13ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 17ms (next.js: 4ms, application-code: 13ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 31ms (next.js: 7ms, application-code: 24ms)
+⚠ Blocked cross-origin request to Next.js dev resource /_next/hmr from "cardigan-remorse-nickname.ngrok-free.dev".
+Cross-origin access to Next.js dev resources is blocked by default for safety.
+
+To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
+
+// next.config.js
+module.exports = {
+  allowedDevOrigins: ['cardigan-remorse-nickname.ngrok-free.dev'],
+}
+
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 23ms (next.js: 3ms, application-code: 20ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 25ms (next.js: 4ms, application-code: 21ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 25ms (next.js: 3ms, application-code: 22ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 23ms (next.js: 4ms, application-code: 19ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 29ms (next.js: 3ms, application-code: 27ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 30ms (next.js: 4ms, application-code: 27ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 21ms (next.js: 3ms, application-code: 18ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ POST /api/programmes 200 in 2.6s (next.js: 333ms, application-code: 2.2s)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 31ms (next.js: 7ms, application-code: 24ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 16ms (next.js: 3ms, application-code: 13ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 4ms, application-code: 17ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 29ms (next.js: 4ms, application-code: 24ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 28ms (next.js: 6ms, application-code: 23ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 3ms, application-code: 17ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 25ms (next.js: 4ms, application-code: 21ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 4ms, application-code: 17ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 26ms (next.js: 4ms, application-code: 22ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 18ms (next.js: 4ms, application-code: 14ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 23ms (next.js: 5ms, application-code: 18ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 3ms, application-code: 16ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 25ms (next.js: 5ms, application-code: 20ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 30ms (next.js: 6ms, application-code: 24ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ POST /api/programmes 200 in 2.5s (next.js: 8ms, application-code: 2.5s)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 26ms (next.js: 5ms, application-code: 20ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 18ms (next.js: 3ms, application-code: 15ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 24ms (next.js: 10ms, application-code: 14ms)
+✓ Compiled in 98ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 24ms (next.js: 4ms, application-code: 20ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 19ms (next.js: 4ms, application-code: 15ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 38ms (next.js: 4ms, application-code: 34ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 3ms, application-code: 17ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 5ms, application-code: 15ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 21ms (next.js: 3ms, application-code: 17ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 16ms (next.js: 3ms, application-code: 14ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 18ms (next.js: 3ms, application-code: 15ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 17ms (next.js: 3ms, application-code: 14ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 4ms, application-code: 17ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 18ms (next.js: 3ms, application-code: 15ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 7ms (next.js: 3ms, application-code: 5ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 12ms (next.js: 2ms, application-code: 10ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 30ms (next.js: 3ms, application-code: 27ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ POST /api/programmes 200 in 2.5s (next.js: 3ms, application-code: 2.5s)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ POST /api/extract 200 in 4.9s (next.js: 587ms, application-code: 4.3s)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 23ms (next.js: 6ms, application-code: 16ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 11ms (next.js: 3ms, application-code: 9ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 25ms (next.js: 5ms, application-code: 19ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 21ms (next.js: 4ms, application-code: 18ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 21ms (next.js: 4ms, application-code: 16ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 28ms (next.js: 6ms, application-code: 23ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 18ms (next.js: 3ms, application-code: 15ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 28ms (next.js: 4ms, application-code: 24ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 5ms, application-code: 16ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 173ms (next.js: 77ms, application-code: 96ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 92ms (next.js: 32ms, application-code: 60ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 22ms (next.js: 6ms, application-code: 17ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 23ms (next.js: 5ms, application-code: 18ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 24ms (next.js: 3ms, application-code: 21ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 33ms (next.js: 4ms, application-code: 29ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 24ms (next.js: 5ms, application-code: 19ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 22ms (next.js: 5ms, application-code: 17ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 18ms (next.js: 3ms, application-code: 16ms)
+[browser] ./lib/programmes.ts:209:1
+Error: Expression expected
+  207 |
+  208 | /** Links that lead towards a course list. */
+> 209 | const HUB_TEXT =
+      | ^^^^^
+  210 |   /\b(courses|programmes|programs|degrees|majors|subjects)\b|course (finder|search|list)|...
+  211 |
+  212 | /** Links to the next page of the same list. */
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./lib/programmes.ts
+    ./app/api/programmes/route.ts 
+[browser] ./lib/programmes.ts:209:1
+Error: Expression expected
+  207 |
+  208 | /** Links that lead towards a course list. */
+> 209 | const HUB_TEXT =
+      | ^^^^^
+  210 |   /\b(courses|programmes|programs|degrees|majors|subjects)\b|course (finder|search|list)|...
+  211 |
+  212 | /** Links to the next page of the same list. */
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./lib/programmes.ts
+    ./app/api/programmes/route.ts 
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 27ms (next.js: 5ms, application-code: 22ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 4ms, application-code: 17ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 34ms (next.js: 5ms, application-code: 29ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 19ms (next.js: 4ms, application-code: 15ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 21ms (next.js: 3ms, application-code: 18ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 23ms (next.js: 5ms, application-code: 18ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 23ms (next.js: 3ms, application-code: 20ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 3ms, application-code: 17ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 20ms (next.js: 4ms, application-code: 16ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 24ms (next.js: 5ms, application-code: 19ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 24ms (next.js: 4ms, application-code: 20ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 214ms (next.js: 98ms, application-code: 116ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ POST /api/programmes 200 in 343ms (next.js: 34ms, application-code: 309ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ POST /api/programmes 200 in 219ms (next.js: 2ms, application-code: 217ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ POST /api/programmes 200 in 10.4s (next.js: 3ms, application-code: 10.4s)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ POST /api/extract 200 in 9.0s (next.js: 17ms, application-code: 9.0s)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 33ms (next.js: 11ms, application-code: 21ms)
+✓ Compiled in 276ms
+[browser] Uncaught ReferenceError: Trash2 is not defined
+    at SchoolDetails (components/SchoolDetails.tsx:320:12)
+    at SchoolEntry (components/SchoolEntry.tsx:46:19)
+    at Planner/<.children<.children<.children<.children<.children< (components/Planner.tsx:166:19)
+    at Planner (components/Planner.tsx:165:24)
+    at Home (app\page.tsx:4:10)
+  318 |           onBlur={() => setConfirmRemove(false)}
+  319 |         >
+> 320 |           <Trash2 size={15} strokeWidth={1.9} aria-hidden="true" />
+      |            ^
+  321 |           {confirmRemove ? "Tap again to remove" : "Remove school"}
+  322 |         </button>
+  323 |       </div>
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+✓ Compiled in 254ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 119ms (next.js: 29ms, application-code: 90ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+✓ Compiled in 38ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 26ms (next.js: 8ms, application-code: 18ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 19ms (next.js: 3ms, application-code: 16ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 26ms (next.js: 13ms, application-code: 13ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 15ms (next.js: 3ms, application-code: 11ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ POST /api/programmes 200 in 9.6s (next.js: 2ms, application-code: 9.6s)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ POST /api/extract 200 in 5.8s (next.js: 2ms, application-code: 5.8s)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 31ms (next.js: 11ms, application-code: 21ms)
+✓ Compiled in 57ms
+[browser] Uncaught ReferenceError: useState is not defined
+    at Compare (components/Compare.tsx:82:31)
+    at Planner (components/Planner.tsx:90:16)
+    at Home (app\page.tsx:4:10)
+  80 |   // Only rendered on the client (the planner waits for storage), so reading
+  81 |   // localStorage in the initialiser is safe.
+> 82 |   const [picked, setPicked] = useState<string[]>(() => storedPick(schools) ?? schools.slice(0, 2).map((s) => s.id));
+     |                               ^
+  83 |
+  84 |   if (schools.length < 2) {
+  85 |     return (
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+✓ Compiled in 72ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 66ms (next.js: 10ms, application-code: 56ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 33ms (next.js: 7ms, application-code: 26ms)
+✓ Compiled in 36ms
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 18ms (next.js: 2ms, application-code: 16ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 470ms (next.js: 338ms, application-code: 132ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 120ms (next.js: 11ms, application-code: 109ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET /calendar 200 in 81ms (next.js: 65ms, application-code: 15ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 15ms (next.js: 4ms, application-code: 11ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 414ms (next.js: 163ms, application-code: 252ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 49ms (next.js: 10ms, application-code: 40ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+ GET / 200 in 135ms (next.js: 39ms, application-code: 95ms)
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+
+⚠ ./
+Warning: Failed to find font override values for font `Special Gothic Expanded One`
+Skipping generating a fallback font.
+
+

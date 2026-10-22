@@ -1,0 +1,624 @@
+/*
+ * The page frame: one narrow reading column, generous top ground, and a
+ * hairline rail down the left of the list that the entry dots sit on.
+ */
+
+.page {
+  min-height: 100dvh;
+  padding: clamp(2rem, 6vw, 4.5rem) 1.25rem 4rem;
+}
+
+.column {
+  width: 100%;
+  max-width: var(--col);
+  margin: 0 auto;
+}
+
+/* Header ----------------------------------------------------------------- */
+
+.headerTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.25rem;
+}
+
+.title {
+  font-size: clamp(1.75rem, 5.5vw, 2.4rem);
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+.blurb {
+  max-width: 34rem;
+  margin-top: 1rem;
+  color: var(--body);
+  font-size: 15px;
+}
+
+.add {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--keyline);
+}
+
+/* Next up ---------------------------------------------------------------- */
+
+.lede {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 2.5rem;
+  padding: 0.95rem 1.1rem;
+  border-radius: 6px;
+  background: var(--sunken);
+}
+
+.ledeLine {
+  color: var(--body);
+  font-size: 15px;
+}
+
+.ledeLine strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.ledeCount {
+  color: var(--ink);
+}
+
+.ledeCount[data-soon] {
+  color: var(--alert);
+}
+
+/* Tabs ------------------------------------------------------------------- */
+
+.tabs {
+  display: flex;
+  gap: 1.5rem;
+  margin: 2.5rem 0 0.5rem;
+  border-bottom: 1px solid var(--keyline);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0 0 0.7rem;
+  border: none;
+  border-bottom: 1px solid transparent;
+  margin-bottom: -1px;
+  background: none;
+  color: var(--faint);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+
+.tab:hover {
+  color: var(--body);
+}
+
+.tab[data-active] {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+.count {
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--chip);
+  color: var(--mute);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+/* The rail --------------------------------------------------------------- */
+
+.rail {
+  position: relative;
+  margin-top: 0.5rem;
+}
+
+.rail::before {
+  content: "";
+  position: absolute;
+  left: calc(var(--rail-x) + 4px);
+  top: 1.6rem;
+  bottom: 1.6rem;
+  width: 1px;
+  background: var(--rail);
+}
+
+.noMatch {
+  padding: 1.5rem 0;
+  color: var(--faint);
+  font-size: 14px;
+}
+
+.noMatchClear {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--body);
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.2em;
+}
+
+/* Empty state and footer -------------------------------------------------- */
+
+/* A board: how it works on the left, two notes pinned beside it. */
+.empty {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 15.5rem);
+  align-items: start;
+  gap: 2rem 1.5rem;
+  margin-top: 2.5rem;
+  padding: 1.75rem 1.5rem 2.25rem;
+}
+
+.emptyNotes {
+  display: grid;
+  gap: 1.75rem;
+  padding-top: 2rem;
+}
+
+@media (max-width: 720px) {
+  .empty {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .emptyNotes {
+    padding-top: 0;
+  }
+}
+
+/* The hand-drawn arrow from the headline down to the link box. */
+.header {
+  position: relative;
+}
+
+.scribble {
+  position: absolute;
+  right: 0.5rem;
+  bottom: -2.4rem;
+  z-index: 2;
+  width: 82px;
+  transform: rotate(-6deg);
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .scribble {
+    display: none;
+  }
+}
+
+.emptyNote {
+  max-width: 19rem;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.emptyLabel {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.emptyNote :global(.hand) {
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+/* On paper the ink is always dark, whatever the theme. */
+.noteButton {
+  margin-top: 0.8rem;
+  padding: 0.45rem 0.95rem;
+  border: none;
+  border-radius: 999px;
+  background: #2c2a24;
+  color: #fffdf5;
+  font-size: 13px;
+  font-weight: 600;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.noteButton:hover {
+  transform: translateY(-1px) rotate(-1deg);
+}
+
+.demoButton {
+  justify-self: start;
+  margin-top: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--keyline);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--body);
+  font-size: 13px;
+  transition: border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+.demoButton:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.sampleNote {
+  margin-top: 1.5rem;
+  padding: 0.6rem 0.8rem;
+  border-left: 2px solid var(--alert);
+  background: var(--alert-soft);
+  border-radius: 0 6px 6px 0;
+  color: var(--body);
+  font-size: 13px;
+}
+
+.sampleNote strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.footer {
+  margin-top: 4rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--keyline);
+  color: var(--faint);
+  font-size: 12px;
+  max-width: 30rem;
+}
+
+/* On narrow screens the gutter isn't there to hold the rail, so bring the
+   whole thing inside the column instead of letting dots fall off-screen. */
+@media (max-width: 640px) {
+  .rail {
+    /* Pull the column in and hang the dots in the space that opens up — the
+       dots read this, so the rail and the dots move together. */
+    --rail-x: -1.4rem;
+    padding-left: 1.4rem;
+  }
+
+  .rail::before {
+    left: 4px;
+  }
+}
+
+/* ===========================================================================
+ * Styles under review (see app/ui-styles.css). Decoration is hidden unless
+ * its style is on.
+ * ======================================================================== */
+
+.ghost,
+.doodle {
+  display: none;
+}
+
+/* AppSignal ---------------------------------------------------------------- */
+
+:global([data-ui="appsignal"]) .page {
+  padding: 0 1.25rem;
+}
+
+/* The column, framed top to bottom by hairlines, as AppSignal frames its body. */
+:global([data-ui="appsignal"]) .column {
+  min-height: 100dvh;
+  padding: clamp(2rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 2.75rem) 4rem;
+  border-left: 1px solid var(--keyline);
+  border-right: 1px solid var(--keyline);
+}
+
+:global([data-ui="appsignal"]) .title {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.1rem, 6.6vw, 3.7rem);
+  line-height: 1.08;
+  letter-spacing: 0;
+  color: var(--display-ink);
+}
+
+:global([data-ui="appsignal"]) .blurb {
+  max-width: 36rem;
+  margin-top: 1.4rem;
+  font-size: 19px;
+  line-height: 1.5;
+}
+
+:global([data-ui="appsignal"]) .doodle {
+  display: block;
+  margin-top: 1.6rem;
+  font-family: var(--font-hand), cursive;
+  font-size: 22px;
+  color: var(--mute);
+  transform: rotate(-2.5deg);
+  transform-origin: left;
+}
+
+:global([data-ui="appsignal"]) .add {
+  margin-top: 1.25rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+:global([data-ui="appsignal"]) .lede {
+  border: 1px solid var(--keyline);
+  border-radius: var(--radius-card);
+  background: var(--card);
+  padding: 1.1rem 1.3rem;
+}
+
+:global([data-ui="appsignal"]) .ledeCount {
+  color: var(--accent);
+}
+
+:global([data-ui="appsignal"]) .tab {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+:global([data-ui="appsignal"]) .tab[data-active] {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+:global([data-ui="appsignal"]) .demoButton {
+  padding: 0.55rem 1.3rem;
+  border: none;
+  border-radius: 32px;
+  background: var(--cta-bg);
+  box-shadow:
+    inset 0 0 0 1.5px var(--cta-ring),
+    inset 0 0 12px 0 var(--cta-glow);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+:global([data-ui="appsignal"]) .demoButton:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* The count of saved schools, set huge and nearly invisible behind the header. */
+
+/* A lime marker under the second line — the one place lime is loud. */
+
+/* "Next up" as the dark band — the one block that should stop the eye. */
+
+/* Tabs become a segmented pill. */
+
+/* Entries are cards here, so there's no rail to hang dots on. */
+
+/* AppSignal light: the yellow moves from the letters to a highlighter band behind them. */
+:global([data-ui="appsignal"]:not([data-theme="dark"])) .titleAccent {
+  background: linear-gradient(transparent 55%, var(--yellow) 55%, var(--yellow) 90%, transparent 90%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* Pleurat: the column is a framed cream sheet; the margins keep the ruled lines. */
+:global([data-ui="pleurat"]) .page {
+  padding: 0 1.25rem;
+}
+
+:global([data-ui="pleurat"]) .column {
+  min-height: 100dvh;
+  padding: clamp(2rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 2.75rem) 4rem;
+  border-left: 1px solid var(--keyline);
+  border-right: 1px solid var(--keyline);
+  background: var(--paper);}
+
+:global([data-ui="pleurat"]) .title {
+  font-size: clamp(2.4rem, 6.4vw, 4rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+/* The second half of the headline, in the muted olive. */
+:global([data-ui="pleurat"]) .titleAccent {
+  color: var(--olive);
+}
+
+:global([data-ui="pleurat"]) .blurb {
+  max-width: 34rem;
+  margin-top: 1.5rem;
+  font-size: 17.5px;
+  line-height: 1.6;
+}
+
+:global([data-ui="pleurat"]) .add {
+  margin-top: 2rem;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* "Next up" as the amber status bar: three squares, spaced capitals, dark ink. */
+:global([data-ui="pleurat"]) .lede {
+  padding: 0.8rem 1rem;
+  border-radius: 0;
+  background: var(--amber);
+}
+
+:global([data-ui="pleurat"]) .lede :global(.eyebrow) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  color: #16140e;
+}
+
+:global([data-ui="pleurat"]) .lede :global(.eyebrow)::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-right: 24px;
+  background: #16140e;
+  box-shadow:
+    12px 0 0 rgba(22, 20, 14, 0.55),
+    24px 0 0 rgba(22, 20, 14, 0.3);
+}
+
+:global([data-ui="pleurat"]) .ledeLine,
+:global([data-ui="pleurat"]) .ledeLine strong,
+:global([data-ui="pleurat"]) .ledeCount {
+  color: #16140e;
+}
+
+:global([data-ui="pleurat"]) .ledeLine strong {
+  font-weight: 600;
+}
+
+:global([data-ui="pleurat"]) .ledeCount[data-soon] {
+  color: #8a1c12;
+  font-weight: 600;
+}
+
+/* Tabs read like the site's nav: plain words, an amber dot under the current one. */
+:global([data-ui="pleurat"]) .tab {
+  position: relative;
+  padding-bottom: 0.85rem;
+  border-bottom: none;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--mute);
+}
+
+:global([data-ui="pleurat"]) .tab[data-active] {
+  color: var(--ink);
+}
+
+:global([data-ui="pleurat"]) .tab[data-active]::after {
+  content: "";
+  position: absolute;
+  bottom: 0.3rem;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--amber);
+  transform: translateX(-50%);
+}
+
+:global([data-ui="pleurat"]) .footer {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+/* ===========================================================================
+ * Motion (shared keyframes live in globals.css).
+ * ======================================================================== */
+
+/* Planner / Board / Compare cross-fade when you switch. */
+.view {
+  animation: fade-up 0.6s var(--ease-expo) backwards;
+}
+
+/* Schools arrive one after another, then settle. */
+.rail > li {
+  animation: fade-up 0.7s var(--ease-expo) backwards;
+}
+
+.rail > li:nth-child(2) { animation-delay: 60ms; }
+.rail > li:nth-child(3) { animation-delay: 120ms; }
+.rail > li:nth-child(4) { animation-delay: 180ms; }
+.rail > li:nth-child(5) { animation-delay: 240ms; }
+.rail > li:nth-child(6) { animation-delay: 300ms; }
+.rail > li:nth-child(7) { animation-delay: 360ms; }
+.rail > li:nth-child(n + 8) { animation-delay: 420ms; }
+
+/* Pleurat: the amber bar wipes in from the left, then its squares pulse in turn. */
+@keyframes wipe-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes ready-squares {
+  0%,
+  100% {
+    box-shadow:
+      12px 0 0 rgba(22, 20, 14, 0.55),
+      24px 0 0 rgba(22, 20, 14, 0.3);
+    opacity: 1;
+  }
+  33% {
+    box-shadow:
+      12px 0 0 rgba(22, 20, 14, 1),
+      24px 0 0 rgba(22, 20, 14, 0.55);
+    opacity: 0.35;
+  }
+  66% {
+    box-shadow:
+      12px 0 0 rgba(22, 20, 14, 0.3),
+      24px 0 0 rgba(22, 20, 14, 1);
+    opacity: 0.55;
+  }
+}
+
+:global([data-ui="pleurat"]) .lede {
+  animation: wipe-in 0.9s var(--ease-expo) backwards;
+  animation-delay: calc(var(--i, 0) * var(--stagger));
+}
+
+:global([data-ui="pleurat"]) .lede :global(.eyebrow)::before {
+  animation: ready-squares 2.4s ease-in-out infinite;
+}
+
+/* Pleurat: the amber dot under the current tab pops in. */
+:global([data-ui="pleurat"]) .tab[data-active]::after {
+  animation: dot-pop 0.5s var(--ease-spring) backwards;
+}
+
+@keyframes dot-pop {
+  from {
+    transform: translateX(-50%) scale(0);
+  }
+}
+/* Local copy: animation names in a CSS module are scoped to it. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+/* Tab icons: muted until they're the one you're on. */
+.tab {
+  gap: 0.4rem;
+}
+
+.tabIcon {
+  flex: none;
+  opacity: 0.55;
+  transition:
+    opacity 0.2s var(--ease-out),
+    transform 0.35s var(--ease-spring);
+}
+
+.tab:hover .tabIcon,
+.tab[data-active] .tabIcon {
+  opacity: 1;
+}
+
+.tab:hover .tabIcon {
+  transform: rotate(-8deg) scale(1.1);
+}
+/* The column is wide now; the link box stays a comfortable length. */
+.add {
+  max-width: 52rem;
+}

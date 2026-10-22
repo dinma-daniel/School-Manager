@@ -1,0 +1,267 @@
+/*
+ * The side-by-side. Wider than the reading column by design, so it scrolls
+ * horizontally with the fact labels pinned to the left edge.
+ */
+
+.scroller {
+  overflow-x: auto;
+  margin: 0 -0.25rem;
+  padding: 0 0.25rem 0.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.corner {
+  text-align: left;
+  vertical-align: bottom;
+  padding: 0 1rem 0.7rem 0;
+  position: sticky;
+  left: 0;
+  background: var(--paper);
+  z-index: 1;
+}
+
+.school {
+  min-width: 11rem;
+  padding: 0 1rem 0.7rem 0;
+  text-align: left;
+  vertical-align: bottom;
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.016em;
+  border-bottom: 1px solid var(--rule);
+}
+
+.programme {
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--mute);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.rowLabel {
+  position: sticky;
+  left: 0;
+  padding: 0.65rem 1rem 0.65rem 0;
+  background: var(--paper);
+  color: var(--faint);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: left;
+  vertical-align: top;
+  white-space: nowrap;
+  border-bottom: 1px dotted var(--keyline);
+  z-index: 1;
+}
+
+.cell {
+  padding: 0.65rem 1rem 0.65rem 0;
+  vertical-align: top;
+  color: var(--body);
+  border-bottom: 1px dotted var(--keyline);
+}
+
+.stacked {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.strong {
+  color: var(--ink);
+}
+
+.sub {
+  color: var(--faint);
+  font-size: 12px;
+}
+
+.sub[data-soon] {
+  color: var(--alert);
+}
+
+.warn {
+  color: var(--alert);
+}
+
+.empty {
+  color: var(--faint);
+}
+
+.thin {
+  color: var(--faint);
+  font-size: 14px;
+  padding: 1rem 0;
+}
+
+/* Picking what to compare ------------------------------------------------- */
+
+.compare {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.picker {
+  display: grid;
+  gap: 0.7rem;
+  padding: 0.9rem 1rem 1rem;
+  border: 1px solid var(--keyline);
+  border-radius: var(--radius-card, 6px);
+  background: var(--card);
+}
+
+.pickerHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.9rem;
+}
+
+.pickerCount {
+  margin-right: auto;
+  color: var(--mute);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pickerAction {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--body);
+  font-size: 13px;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.2em;
+}
+
+.pickerAction:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+.pickerAction:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  max-width: 22rem;
+  padding: 0.45rem 0.8rem 0.45rem 0.55rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--body);
+  font-size: 13.5px;
+  text-align: left;
+  transition:
+    border-color 0.2s var(--ease-out),
+    background 0.2s var(--ease-out),
+    color 0.2s var(--ease-out);
+}
+
+.chip:hover {
+  border-color: var(--ink);
+}
+
+.chip[data-on] {
+  border-color: var(--ink);
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+.tick {
+  display: grid;
+  flex: none;
+  place-items: center;
+  align-self: center;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--rule);
+  border-radius: 4px;
+  background: var(--card);
+}
+
+.chip[data-on] .tick {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.chipName {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.chipProgramme {
+  overflow: hidden;
+  color: var(--mute);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Each column can be taken out from its own header. */
+.schoolHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.drop {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--faint);
+  transition:
+    background 0.2s var(--ease-out),
+    color 0.2s var(--ease-out);
+}
+
+.drop:hover {
+  background: var(--alert-soft);
+  color: var(--alert);
+}
+
+/* Pleurat: square chips, an amber tick. */
+:global([data-ui="pleurat"]) .chip,
+:global([data-ui="pleurat"]) .picker {
+  border-radius: 3px;
+}
+
+:global([data-ui="pleurat"]) .chip[data-on] {
+  background: color-mix(in srgb, var(--amber) 22%, var(--paper));
+}
+
+:global([data-ui="pleurat"]) .chip[data-on] .tick {
+  border-color: var(--amber);
+  background: var(--amber);
+  color: #16140e;
+}
+
+:global([data-ui="pleurat"]) .tick {
+  border-radius: 2px;
+}

@@ -1,0 +1,691 @@
+/*
+ * The calendar: a month you can step through, then the same dates as a list,
+ * soonest first. Colour carries urgency — red inside a week, amber inside a
+ * month, the accent beyond, faint once passed — and nothing else.
+ */
+
+.page {
+  min-height: 100dvh;
+  padding: clamp(2rem, 6vw, 4.5rem) 1.25rem 4rem;
+}
+
+.column {
+  width: 100%;
+  max-width: var(--col);
+  margin: 0 auto;
+  display: grid;
+  gap: 2rem;
+}
+
+.header {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.title {
+  font-size: clamp(1.75rem, 5.5vw, 2.4rem);
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+}
+
+.blurb {
+  max-width: 34rem;
+  font-size: 15px;
+}
+
+.thin {
+  color: var(--faint);
+  font-size: 14px;
+}
+
+/* Buttons --------------------------------------------------------------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius, 6px);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.button:hover:not(:disabled) {
+  opacity: 0.86;
+}
+
+.button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.exportRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+}
+
+.exportNote {
+  flex: 1 1 16rem;
+  color: var(--faint);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.empty {
+  display: grid;
+  justify-items: start;
+  gap: 0.9rem;
+  padding: 1.5rem 0;
+  border-top: 1px dotted var(--keyline);
+  border-bottom: 1px dotted var(--keyline);
+  color: var(--faint);
+  font-size: 14px;
+}
+
+/* Month ----------------------------------------------------------------- */
+
+.month {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.monthBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1rem;
+}
+
+.monthName {
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.monthYear {
+  color: var(--faint);
+  font-weight: 400;
+}
+
+.monthCount {
+  color: var(--faint);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.monthNav {
+  display: flex;
+  gap: 0.3rem;
+  margin-left: auto;
+}
+
+.monthNav button {
+  min-width: 2.1rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--keyline);
+  border-radius: var(--radius, 6px);
+  background: transparent;
+  color: var(--body);
+  font-size: 13px;
+  transition:
+    border-color 0.2s var(--ease-out),
+    color 0.2s var(--ease-out);
+}
+
+.monthNav button:hover {
+  border-color: var(--rule);
+  color: var(--ink);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border-top: 1px solid var(--keyline);
+  border-left: 1px solid var(--keyline);
+  border-radius: var(--radius-card, 6px);
+  overflow: hidden;
+}
+
+.weekday {
+  padding: 0.45rem 0.5rem;
+  border-right: 1px solid var(--keyline);
+  border-bottom: 1px solid var(--keyline);
+  color: var(--faint);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.2rem;
+  min-height: 5.6rem;
+  padding: 0.35rem 0.4rem;
+  border: none;
+  border-right: 1px solid var(--keyline);
+  border-bottom: 1px solid var(--keyline);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  cursor: default;
+}
+
+.cell[data-has] {
+  cursor: pointer;
+}
+
+.cell[data-has]:hover {
+  background: var(--hover);
+}
+
+.cell[data-outside] {
+  background: var(--sunken);
+}
+
+.cell[data-outside] .cellDay {
+  opacity: 0.45;
+}
+
+.cell[data-selected] {
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+.cellDay {
+  color: var(--mute);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cell[data-today] .cellDay {
+  align-self: flex-start;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.chip {
+  overflow: hidden;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chip[data-kind="start"] {
+  background: transparent !important;
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
+.more {
+  color: var(--faint);
+  font-size: 11px;
+}
+
+.dots {
+  display: none;
+  gap: 3px;
+}
+
+.dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+/* Urgency, shared by chips, dots, list rows and the key. */
+.page [data-urgency="now"] {
+  --tone: var(--alert);
+  --tone-soft: var(--alert-soft);
+}
+
+.page [data-urgency="soon"] {
+  --tone: var(--caution);
+  --tone-soft: var(--caution-soft);
+}
+
+.page [data-urgency="later"] {
+  --tone: var(--accent);
+  --tone-soft: var(--accent-soft);
+}
+
+.page [data-urgency="past"] {
+  --tone: var(--faint);
+  --tone-soft: var(--chip);
+}
+
+.chip[data-urgency] {
+  background: var(--tone-soft);
+  color: var(--tone);
+}
+
+.chip[data-urgency="past"] {
+  text-decoration: line-through;
+}
+
+.dots span[data-urgency] {
+  background: var(--tone);
+}
+
+.dayPanel {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius-card, 6px);
+  background: var(--sunken);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  color: var(--faint);
+  font-size: 12px;
+}
+
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend li::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--tone);
+}
+
+/* The list -------------------------------------------------------------- */
+
+.agenda {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.agendaMonth {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.agendaMonthName {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--title);
+}
+
+.events {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.event {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.9rem;
+  width: 100%;
+  padding: 0.6rem 0.75rem 0.6rem 0.6rem;
+  border: 1px solid var(--keyline);
+  border-left: 3px solid var(--tone);
+  border-radius: var(--radius-card, 6px);
+  background: var(--card);
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  transition: border-color 0.2s var(--ease-out), background 0.2s var(--ease-out);
+}
+
+.event:hover {
+  background: var(--hover);
+}
+
+.eventDate {
+  display: grid;
+  justify-items: center;
+  line-height: 1;
+}
+
+.eventDay {
+  color: var(--ink);
+  font-size: 1.35rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.eventMonth {
+  margin-top: 0.2rem;
+  color: var(--faint);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.eventBody {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.eventLabel {
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.kind {
+  margin-right: 0.4rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px var(--rule);
+  color: var(--mute);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.eventSchool {
+  overflow: hidden;
+  color: var(--mute);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.eventNote {
+  color: var(--faint);
+  font-size: 12px;
+}
+
+.eventWhen {
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: var(--tone-soft);
+  color: var(--tone);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Words-not-days deadlines, pinned up as notes so they're still in view. */
+.undated {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 1.6rem 1.25rem;
+  padding: 1.6rem 1.25rem 1.5rem;
+}
+
+.undatedOpen {
+  display: grid;
+  gap: 0.25rem;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  text-align: left;
+}
+
+.undatedWhen {
+  font-size: 21px;
+  line-height: 1.1;
+}
+
+.undatedLabel {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.undatedSchool {
+  font-size: 12.5px;
+  opacity: 0.75;
+}
+.passed summary {
+  cursor: pointer;
+  margin-bottom: 0.6rem;
+}
+
+/* Phones: no room for names in the grid, so each date becomes a dot. */
+@media (max-width: 560px) {
+  .cell {
+    min-height: 3.2rem;
+    align-items: center;
+  }
+
+  .chip,
+  .more {
+    display: none;
+  }
+
+  .dots {
+    display: flex;
+  }
+
+  .event {
+    grid-template-columns: 2.6rem minmax(0, 1fr);
+  }
+
+  .eventWhen {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+/* ===========================================================================
+ * Styles under review (see app/ui-styles.css).
+ * ======================================================================== */
+
+/* AppSignal: the same hairline-framed column, display-face title, lit pill button. */
+:global([data-ui="appsignal"]) .page {
+  padding: 0 1.25rem;
+}
+
+:global([data-ui="appsignal"]) .column {
+  min-height: 100dvh;
+  padding: clamp(2rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 2.75rem) 4rem;
+  border-left: 1px solid var(--keyline);
+  border-right: 1px solid var(--keyline);
+  align-content: start;
+}
+
+:global([data-ui="appsignal"]) .title {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--display-ink);
+}
+
+:global([data-ui="appsignal"]) .button {
+  padding: 0.65rem 1.4rem;
+  border: none;
+  border-radius: 32px;
+  background: var(--cta-bg);
+  box-shadow:
+    inset 0 0 0 2px var(--cta-ring),
+    inset 0 0 12px 0 var(--cta-glow);
+  color: var(--ink);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+:global([data-ui="appsignal"]) .button:hover:not(:disabled) {
+  opacity: 1;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+:global([data-ui="appsignal"]) .monthNav button {
+  border-radius: 32px;
+}
+
+:global([data-ui="appsignal"]) .cell[data-today] .cellDay {
+  background: var(--yellow, var(--accent));
+  color: #151515;
+}
+
+/* "Later" on mint: lime fill, navy text — the accent pair the style runs on. */
+
+/* Pleurat: the same framed sheet, the same headline, amber for the action and today. */
+:global([data-ui="pleurat"]) .page {
+  padding: 0 1.25rem;
+}
+
+:global([data-ui="pleurat"]) .column {
+  min-height: 100dvh;
+  padding: clamp(2rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 2.75rem) 4rem;
+  border-left: 1px solid var(--keyline);
+  border-right: 1px solid var(--keyline);
+  background: var(--paper);  align-content: start;
+}
+
+:global([data-ui="pleurat"]) .title {
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+:global([data-ui="pleurat"]) .button {
+  padding: 0.7rem 1.3rem;
+  border-radius: var(--radius);
+  background: var(--amber);
+  color: #16140e;
+}
+
+:global([data-ui="pleurat"]) .button::after {
+  content: " ↗";
+}
+
+:global([data-ui="pleurat"]) .button:hover:not(:disabled) {
+  opacity: 1;
+  background: var(--amber-hover);
+}
+
+:global([data-ui="pleurat"]) .grid {
+  border-radius: 0;
+}
+
+:global([data-ui="pleurat"]) .monthNav button {
+  border-radius: var(--radius);
+}
+
+:global([data-ui="pleurat"]) .cell[data-today] .cellDay {
+  border-radius: 0;
+  background: var(--amber);
+  color: #16140e;
+}
+/* ===========================================================================
+ * Motion (local keyframes: animation names in a CSS module are scoped to it).
+ * ======================================================================== */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+@keyframes from-right {
+  from {
+    opacity: 0;
+    transform: translateX(28px);
+  }
+}
+
+@keyframes from-left {
+  from {
+    opacity: 0;
+    transform: translateX(-28px);
+  }
+}
+
+@keyframes chip-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+/* A month slides in from the side you stepped towards; the first one just fades up. */
+.grid {
+  animation: fade-up 0.6s var(--ease-expo) backwards;
+}
+
+.grid[data-direction="next"] {
+  animation-name: from-right;
+}
+
+.grid[data-direction="prev"] {
+  animation-name: from-left;
+}
+
+.chip {
+  animation: chip-pop 0.45s var(--ease-spring) backwards;
+  animation-delay: 0.15s;
+}
+
+.dayPanel {
+  animation: fade-up 0.45s var(--ease-expo) backwards;
+}
+
+/* List rows follow one another in. */
+.events > li {
+  animation: fade-up 0.6s var(--ease-expo) backwards;
+}
+
+.events > li:nth-child(2) { animation-delay: 50ms; }
+.events > li:nth-child(3) { animation-delay: 100ms; }
+.events > li:nth-child(4) { animation-delay: 150ms; }
+.events > li:nth-child(5) { animation-delay: 200ms; }
+.events > li:nth-child(n + 6) { animation-delay: 250ms; }
+
+/* Pleurat: the export button's arrow leans the way it points. */
+:global([data-ui="pleurat"]) .button::after {
+  display: inline-block;
+  margin-left: 0.25rem;
+  transition: transform 0.35s var(--ease-spring);
+}
+
+:global([data-ui="pleurat"]) .button:hover:not(:disabled)::after {
+  transform: translate(2px, -2px);
+}
+/* Icons: one leading the export button, one beside each list heading. */
+.button {
+  gap: 0.5rem;
+}
+
+.buttonIcon {
+  flex: none;
+  transition: transform 0.35s var(--ease-spring);
+}
+
+.button:hover:not(:disabled) .buttonIcon {
+  transform: rotate(-10deg) scale(1.1);
+}
+
+.heading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}

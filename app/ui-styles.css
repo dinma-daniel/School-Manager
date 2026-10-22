@@ -1,0 +1,239 @@
+/*
+ * The two styles under review, each scoped to <html data-ui="…">. They work
+ * mostly by redefining the tokens globals.css already runs on; the few things
+ * tokens can't express live next to their components, under
+ * :global([data-ui="…"]) in the CSS modules.
+ *
+ * Once one is chosen, its block moves into globals.css and this file goes.
+ */
+
+:root {
+  --font-display: var(--font-sans);
+  --radius: 6px;
+  --radius-card: 6px;
+}
+
+/* ===========================================================================
+ * AppSignal — near-black ground, cream text, one warm yellow. A huge expanded
+ * display face for the headline, a hand-written aside, pill buttons lit from
+ * the inside, and the column framed by hairlines. The original is dark-only;
+ * the light mode is ours — cream ground, near-black ink, and the yellow
+ * turned from a text colour into a fill.
+ * ======================================================================== */
+
+/* Light: a pale tint of AppSignal's cream, ink for text, yellow for fills. */
+:root[data-ui="appsignal"] {
+  color-scheme: light;
+
+  --paper: #f8fbee;
+  --card: #ffffff;
+  --sunken: #eff4dc;
+  --chip: #e8eed2;
+
+  --ink: #151515;
+  --title: #151515;
+  --body: #3a3d33;
+  --mute: #686d5c;
+  --faint: #7a7f6c;
+
+  --rule: rgba(21, 21, 21, 0.12);
+  --keyline: rgba(21, 21, 21, 0.08);
+  --hover: rgba(21, 21, 21, 0.04);
+
+  /* Yellow can't be read as text on cream, so accents read in amber and fill in yellow. */
+  --accent: #8f5d00;
+  --accent-soft: rgba(255, 202, 69, 0.38);
+  --alert: #b8321f;
+  --alert-soft: rgba(184, 50, 31, 0.09);
+  --caution: #9a5a00;
+  --caution-soft: rgba(245, 165, 58, 0.18);
+
+  --dot: #b9bea7;
+  --rail: rgba(21, 21, 21, 0.12);
+
+  /* The headline, and the lit pill buttons. */
+  --display-ink: #151515;
+  --yellow: #ffca45;
+  --cta-bg: rgba(21, 21, 21, 0.05);
+  --cta-ring: #151515;
+  --cta-glow: rgba(21, 21, 21, 0.14);
+
+  --col: 72rem;
+  --radius: 12px;
+  --radius-card: 16px;
+}
+
+:root[data-ui="appsignal"][data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper: #151515;
+  --card: #1b1b1a;
+  --sunken: #1d1e1b;
+  --chip: #262722;
+
+  --ink: #efffc8;
+  --title: #efffc8;
+  --body: #d9e6b6;
+  --mute: #9aa385;
+  --faint: #7c8370;
+
+  --rule: rgba(239, 255, 200, 0.12);
+  --keyline: rgba(239, 255, 200, 0.07);
+  --hover: rgba(239, 255, 200, 0.05);
+
+  --accent: #ffca45;
+  --accent-soft: rgba(255, 202, 69, 0.13);
+  --alert: #ff7f6e;
+  --alert-soft: rgba(255, 127, 110, 0.12);
+  --caution: #f5a53a;
+  --caution-soft: rgba(245, 165, 58, 0.12);
+
+  --dot: #4b4f42;
+  --rail: rgba(239, 255, 200, 0.12);
+
+  --display-ink: #ffca45;
+  --cta-bg: rgba(239, 255, 200, 0.1);
+  --cta-ring: #efffc8;
+  --cta-glow: rgba(239, 255, 200, 0.25);
+}
+
+[data-ui="appsignal"] body {
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+
+[data-ui="appsignal"] h1,
+[data-ui="appsignal"] h2,
+[data-ui="appsignal"] h3 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* AppSignal labels are bold caps in the body face, not a mono. */
+[data-ui="appsignal"] .eyebrow {
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--mute);
+}
+
+[data-ui="appsignal"] ::selection {
+  background: #ffca45;
+  color: #151515;
+}
+
+/* ===========================================================================
+ * Pleurat — warm cream paper, near-black ink, one amber. The page sits in a
+ * hairline frame with faint ruled lines in the margins outside it; headlines
+ * are big and tight with their second half in a muted olive; buttons are
+ * square, amber-filled with dark text; labels are spaced mono capitals; and
+ * the thing that matters most right now runs as an amber status bar.
+ * ======================================================================== */
+
+:root[data-ui="pleurat"] {
+  color-scheme: light;
+  --font-sans: "General Sans";
+  --font-display: "General Sans";
+
+  --paper: #fdfbf3;
+  --card: #ffffff;
+  --sunken: #f6f2e2;
+  --chip: #efe9d4;
+  --margin: #f7f3e3;
+
+  --ink: #16140e;
+  --title: #16140e;
+  --body: #4a473d;
+  --mute: #6f6b5c;
+  --faint: #8a8574;
+  /* The muted half of a headline. */
+  --olive: #8a8676;
+
+  --rule: rgba(22, 20, 14, 0.14);
+  --keyline: rgba(22, 20, 14, 0.1);
+  --hover: rgba(22, 20, 14, 0.035);
+  --ruling: rgba(22, 20, 14, 0.045);
+
+  /* Amber can't be read as text on cream: it fills, and a deep amber reads. */
+  --amber: #f3b44a;
+  --amber-hover: #eaa634;
+  --accent: #9a6400;
+  --accent-soft: rgba(243, 180, 74, 0.24);
+  --alert: #b3261e;
+  --alert-soft: rgba(179, 38, 30, 0.08);
+  --caution: #9a5200;
+  --caution-soft: rgba(243, 180, 74, 0.2);
+
+  --dot: rgba(22, 20, 14, 0.3);
+  --rail: rgba(22, 20, 14, 0.12);
+
+  --col: 72rem;
+  --radius: 2px;
+  --radius-card: 3px;
+}
+
+:root[data-ui="pleurat"][data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper: #1a1810;
+  --card: #211e14;
+  --sunken: #1f1c11;
+  --chip: #2b2719;
+  --margin: #17160e;
+
+  --ink: #f1eee6;
+  --title: #f1eee6;
+  --body: #cbc7b8;
+  --mute: #a19d8e;
+  --faint: #7d7c72;
+  --olive: #8f8b7c;
+
+  --rule: rgba(241, 238, 230, 0.15);
+  --keyline: rgba(241, 238, 230, 0.1);
+  --hover: rgba(241, 238, 230, 0.05);
+  --ruling: rgba(241, 238, 230, 0.04);
+
+  --accent: #f3b44a;
+  --accent-soft: rgba(243, 180, 74, 0.16);
+  --alert: #ff8a75;
+  --alert-soft: rgba(255, 138, 117, 0.12);
+  --caution: #f3b44a;
+  --caution-soft: rgba(243, 180, 74, 0.14);
+
+  --dot: rgba(241, 238, 230, 0.3);
+  --rail: rgba(241, 238, 230, 0.12);
+}
+
+/* Faint ruled lines across the whole sheet; the framed column paints over them. */
+[data-ui="pleurat"] body {
+  background-color: var(--margin);
+  background-image: repeating-linear-gradient(0deg, var(--ruling) 0 1px, transparent 1px 4px);
+  font-family: "General Sans", system-ui, sans-serif;
+  font-size: 16.5px;
+  letter-spacing: -0.005em;
+}
+
+[data-ui="pleurat"] h1,
+[data-ui="pleurat"] h2,
+[data-ui="pleurat"] h3 {
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+
+/* Spaced mono capitals, as on "NEXT PROJECTS". */
+[data-ui="pleurat"] .eyebrow {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: var(--faint);
+}
+
+[data-ui="pleurat"] ::selection {
+  background: var(--amber);
+  color: #16140e;
+}
+
+[data-ui="pleurat"] :focus-visible {
+  outline-color: var(--amber);
+}

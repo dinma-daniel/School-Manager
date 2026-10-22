@@ -1,0 +1,274 @@
+.form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.field {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--keyline);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  letter-spacing: -0.0064em;
+  transition: border-color 0.2s var(--ease-out);
+}
+
+.input::placeholder {
+  color: var(--faint);
+}
+
+.input:hover:not(:disabled) {
+  border-color: var(--rule);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.input:disabled {
+  opacity: 0.55;
+}
+
+.submit {
+  flex: none;
+  padding: 0 1.1rem;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.submit:hover:not(:disabled) {
+  opacity: 0.84;
+}
+
+.submit:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.status {
+  min-height: 1.3rem;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.hint {
+  color: var(--faint);
+}
+
+.working {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--body);
+}
+
+.pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: breathe 1.4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.error {
+  color: var(--alert);
+}
+
+.nolist {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--keyline);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.nolist p {
+  margin: 0;
+  color: var(--body);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.nolist strong {
+  color: var(--title);
+  font-weight: 500;
+}
+
+.nolistActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.secondary {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--keyline);
+  border-radius: 6px;
+  background: none;
+  color: var(--body);
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.secondary:hover {
+  opacity: 0.84;
+}
+
+.textButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--faint);
+  font-size: 13px;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.2em;
+}
+
+.textButton:hover {
+  color: var(--ink);
+}
+
+.progress {
+  color: var(--title);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===========================================================================
+ * Styles under review (see app/ui-styles.css).
+ * ======================================================================== */
+
+/* AppSignal: a dark pill field, and the button lit from inside like its CTAs. */
+:global([data-ui="appsignal"]) .input {
+  padding: 0.85rem 1.35rem;
+  border-radius: 32px;
+  background: var(--card);
+  font-size: 17px;
+}
+
+:global([data-ui="appsignal"]) .submit {
+  padding: 0 1.6rem;
+  border: none;
+  border-radius: 32px;
+  background: var(--cta-bg);
+  box-shadow:
+    inset 0 0 0 2px var(--cta-ring),
+    inset 0 0 12px 0 var(--cta-glow);
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  transition:
+    background 0.2s var(--ease-out),
+    color 0.2s var(--ease-out);
+}
+
+:global([data-ui="appsignal"]) .submit:hover:not(:disabled) {
+  opacity: 1;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+:global([data-ui="appsignal"]) .secondary {
+  border-radius: 32px;
+}
+
+
+/* Pleurat: a square white field, and the amber button with its arrow. */
+:global([data-ui="pleurat"]) .input {
+  height: 50px;
+  padding: 0 1rem;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+:global([data-ui="pleurat"]) .input:focus {
+  border-color: var(--ink);
+}
+
+:global([data-ui="pleurat"]) .submit {
+  padding: 0 1.35rem;
+  border-radius: var(--radius);
+  background: var(--amber);
+  color: #16140e;
+  font-weight: 500;
+  transition: background 0.2s var(--ease-out);
+}
+
+:global([data-ui="pleurat"]) .submit::after {
+  content: " ↗";
+}
+
+:global([data-ui="pleurat"]) .submit:hover:not(:disabled) {
+  opacity: 1;
+  background: var(--amber-hover);
+}
+
+:global([data-ui="pleurat"]) .pulse {
+  border-radius: 0;
+  background: var(--amber);
+}
+
+:global([data-ui="pleurat"]) .nolist {
+  border-radius: var(--radius-card);
+}
+
+:global([data-ui="pleurat"]) .secondary {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--ink);
+}
+/* Motion: the arrow leans the way it points. */
+:global([data-ui="pleurat"]) .submit::after {
+  display: inline-block;
+  margin-left: 0.25rem;
+  transition: transform 0.35s var(--ease-spring);
+}
+
+:global([data-ui="pleurat"]) .submit:hover:not(:disabled)::after {
+  transform: translate(2px, -2px);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* The "couldn't find a list" card slides in rather than appearing. */
+.nolist {
+  animation: fade-up 0.5s var(--ease-expo) backwards;
+}

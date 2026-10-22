@@ -1,0 +1,325 @@
+.picker {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid var(--keyline);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.single {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 6px;
+  background: var(--accent-soft);
+}
+
+.single p {
+  flex: 1 1 16rem;
+  margin: 0;
+  color: var(--body);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.search {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--keyline);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s var(--ease-out);
+}
+
+.search::placeholder {
+  color: var(--faint);
+}
+
+.search:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.levels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--chip);
+  color: var(--body);
+  font-size: 13px;
+  transition:
+    background 0.2s var(--ease-out),
+    color 0.2s var(--ease-out);
+}
+
+.chip:hover {
+  color: var(--ink);
+}
+
+.chip[data-active] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.chipCount {
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.list {
+  max-height: 22rem;
+  overflow-y: auto;
+  margin: 0 -0.5rem;
+  padding: 0;
+  list-style: none;
+  overscroll-behavior: contain;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  column-gap: 0.65rem;
+  align-items: baseline;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s var(--ease-out);
+}
+
+.row:hover {
+  background: var(--hover);
+}
+
+.row[data-checked] {
+  background: var(--accent-soft);
+}
+
+.row[data-locked] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.row input {
+  accent-color: var(--accent);
+  transform: translateY(0.1em);
+}
+
+.name {
+  color: var(--title);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.guess {
+  margin-left: 0.3rem;
+  color: var(--faint);
+}
+
+.level {
+  color: var(--mute);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.path {
+  grid-column: 2 / -1;
+  overflow: hidden;
+  color: var(--faint);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.none {
+  padding: 0.75rem 0.5rem;
+  color: var(--faint);
+  font-size: 14px;
+}
+
+.bulk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1rem;
+  font-size: 13px;
+}
+
+.tally {
+  margin-left: auto;
+  color: var(--mute);
+  font-variant-numeric: tabular-nums;
+}
+
+.textButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--body);
+  font-size: 13px;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.2em;
+}
+
+.textButton:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+.textButton:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.note {
+  margin: 0;
+  color: var(--faint);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.primary,
+.secondary {
+  padding: 0.6rem 1.1rem;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.primary {
+  border: 1px solid transparent;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.secondary {
+  border: 1px solid var(--keyline);
+  background: none;
+  color: var(--body);
+}
+
+.primary:hover:not(:disabled),
+.secondary:hover {
+  opacity: 0.84;
+}
+
+.primary:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* ===========================================================================
+ * Styles under review (see app/ui-styles.css).
+ * ======================================================================== */
+
+:global([data-ui="appsignal"]) .picker {
+  border-radius: var(--radius-card);
+}
+
+:global([data-ui="appsignal"]) .primary {
+  border: none;
+  border-radius: 32px;
+  background: var(--cta-bg);
+  box-shadow:
+    inset 0 0 0 2px var(--cta-ring),
+    inset 0 0 12px 0 var(--cta-glow);
+  color: var(--ink);
+}
+
+:global([data-ui="appsignal"]) .primary:hover:not(:disabled) {
+  opacity: 1;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+:global([data-ui="appsignal"]) .secondary,
+:global([data-ui="appsignal"]) .search {
+  border-radius: 32px;
+}
+
+
+:global([data-ui="pleurat"]) .picker {
+  border-radius: var(--radius-card);
+}
+
+:global([data-ui="pleurat"]) .primary {
+  border-radius: var(--radius);
+  background: var(--amber);
+  color: #16140e;
+}
+
+:global([data-ui="pleurat"]) .primary:hover:not(:disabled) {
+  opacity: 1;
+  background: var(--amber-hover);
+}
+
+:global([data-ui="pleurat"]) .secondary {
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--ink);
+}
+
+:global([data-ui="pleurat"]) .search,
+:global([data-ui="pleurat"]) .chip {
+  border-radius: var(--radius);
+}
+
+:global([data-ui="pleurat"]) .chip[data-active] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+/* Motion: the picker opens with a rise, its first rows following in turn. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.picker {
+  animation: fade-up 0.6s var(--ease-expo) backwards;
+}
+
+.list > li {
+  animation: fade-up 0.5s var(--ease-expo) backwards;
+}
+
+.list > li:nth-child(1) { animation-delay: 120ms; }
+.list > li:nth-child(2) { animation-delay: 150ms; }
+.list > li:nth-child(3) { animation-delay: 180ms; }
+.list > li:nth-child(4) { animation-delay: 210ms; }
+.list > li:nth-child(5) { animation-delay: 240ms; }
+.list > li:nth-child(6) { animation-delay: 270ms; }
+.list > li:nth-child(n + 7) { animation-delay: 300ms; }

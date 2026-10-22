@@ -1,0 +1,207 @@
+/*
+ * Search and filters above the saved list. The search box is always there;
+ * everything else folds away behind one button so a short list stays short.
+ */
+
+.filters {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.bar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.search {
+  flex: 1;
+  min-width: 0;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--keyline);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s var(--ease-out);
+}
+
+.search::placeholder {
+  color: var(--faint);
+}
+
+.search:focus,
+.amount:focus,
+.currency:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: none;
+  padding: 0 0.85rem;
+  border: 1px solid var(--keyline);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--body);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+.toggle:hover,
+.toggle[aria-expanded="true"] {
+  color: var(--ink);
+  border-color: var(--rule);
+}
+
+.toggle[data-active] {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.badge {
+  min-width: 1.15rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--paper);
+  font-size: 10px;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+/* The panel ---------------------------------------------------------------- */
+
+.panel {
+  display: grid;
+  gap: 1.1rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--keyline);
+  border-radius: 8px;
+  background: var(--card);
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+.group {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--chip);
+  color: var(--body);
+  font-size: 13px;
+  transition: background 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+
+.chip:hover {
+  color: var(--ink);
+}
+
+.chip[data-active] {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+.chipCount {
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.range {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.amount,
+.currency {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--keyline);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+}
+
+.amount {
+  width: 7.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.dash {
+  color: var(--faint);
+}
+
+.hint {
+  color: var(--faint);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* What the filters left ------------------------------------------------------ */
+
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 1rem;
+  color: var(--mute);
+  font-size: 13px;
+}
+
+.summary strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.unknown {
+  color: var(--faint);
+}
+
+.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--body);
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.2em;
+}
+
+.link:hover {
+  color: var(--ink);
+}
+
+@media (max-width: 560px) {
+  .amount {
+    flex: 1 1 5rem;
+    width: auto;
+  }
+}

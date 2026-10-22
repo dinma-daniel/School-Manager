@@ -1,0 +1,33 @@
+.arrow {
+  display: block;
+  width: 96px;
+  height: auto;
+  color: var(--mute);
+  overflow: visible;
+}
+
+.stroke,
+.head {
+  stroke: currentColor;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  opacity: 0.75;
+}
+
+/* Drawn on like a pen stroke, then the arrowhead flicks in. */
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+}
+
+.stroke {
+  animation: draw 1.3s var(--ease-power3) 0.5s backwards;
+}
+
+.head {
+  animation: draw 0.35s var(--ease-power3) 1.75s backwards;
+}

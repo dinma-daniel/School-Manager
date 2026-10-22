@@ -1,0 +1,157 @@
+/*
+ * One school on the rail: a dot sitting in the left gutter, a clickable
+ * header, and everything else folded away until asked for.
+ */
+
+.entry {
+  position: relative;
+  padding: 1.15rem 0 1.35rem;
+  border-bottom: 1px solid var(--keyline);
+}
+
+.entry:last-child {
+  border-bottom: none;
+}
+
+.dot {
+  position: absolute;
+  left: var(--rail-x);
+  top: 1.55rem;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 1px solid var(--dot);
+  transition: background 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
+}
+
+.entry[data-open] .dot,
+.entry:hover .dot {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.head {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: left;
+  color: inherit;
+}
+
+.name {
+  font-size: 1.2rem;
+  transition: color 0.2s var(--ease-out);
+}
+
+.head:hover .name {
+  color: var(--accent);
+}
+
+.subtitle {
+  margin-top: 0.15rem;
+  color: var(--mute);
+  font-size: 14px;
+}
+
+.panel {
+  display: grid;
+  gap: 1.4rem;
+  margin-top: 1.25rem;
+}
+
+.panel[hidden] {
+  display: none;
+}
+
+/* A quiet control row at the top of the open panel. */
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -0.4rem;
+}
+
+.expand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.65rem;
+  border: 1px solid var(--keyline);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--mute);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.2s var(--ease-out), border-color 0.2s var(--ease-out);
+}
+
+.expand:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.expand svg {
+  width: 11px;
+  height: 11px;
+}
+
+/* ===========================================================================
+ * Styles under review (see app/ui-styles.css).
+ * ======================================================================== */
+
+/* AppSignal: same rail, a heavier name, and a caps pill for the expand control. */
+:global([data-ui="appsignal"]) .name {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+:global([data-ui="appsignal"]) .expand {
+  border-radius: 32px;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-weight: 700;
+}
+
+
+/* Pleurat: the rail stays; its dots turn amber, the name sits a touch heavier. */
+:global([data-ui="pleurat"]) .name {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+:global([data-ui="pleurat"]) .entry[data-open] .dot,
+:global([data-ui="pleurat"]) .entry:hover .dot {
+  background: var(--amber);
+  border-color: var(--amber);
+}
+
+:global([data-ui="pleurat"]) .head:hover .name {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--amber);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+:global([data-ui="pleurat"]) .expand {
+  border-radius: var(--radius);
+}
+/* Motion: the details unfold rather than appear. */
+@keyframes unfold {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.panel:not([hidden]) {
+  animation: unfold 0.55s var(--ease-expo) backwards;
+}
