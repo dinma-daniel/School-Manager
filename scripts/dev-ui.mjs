@@ -1,13 +1,13 @@
-// Run the dev server in one of the UI styles under review, beside any others.
+// Run a side-by-side overlay of an older UI style.
 //
-//   node scripts/dev-ui.mjs pleurat     → http://localhost:3101
+//   node scripts/dev-ui.mjs classic     → http://localhost:3101
 //
 // Each style gets its own build folder, because next dev locks the one it uses
 // and two servers can't share it.
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
 
-const PORTS = { pleurat: 3101 };
+const PORTS = { classic: 3101 };
 const ui = process.argv[2];
 if (!(ui in PORTS)) {
   console.error(`Usage: node scripts/dev-ui.mjs <${Object.keys(PORTS).join("|")}>`);

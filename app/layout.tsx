@@ -5,14 +5,13 @@ import "./globals.css";
 import "./ui-styles.css";
 
 /*
- * Which visual style to render. Two candidate styles are under review, each
- * served by its own dev server (see "dev:appsignal" and "dev:pleurat" in
- * package.json); unset, it's the original look. Read at build time, so a
- * server shows one style for its whole life.
+ * Which visual style to render. Pleurat is the default. The original look
+ * is still available on its own dev server (`dev:classic` in package.json).
+ * Read at build time, so a server shows one style for its whole life.
  */
 type Ui = "classic" | "appsignal" | "pleurat";
 const UI: Ui =
-  process.env.NEXT_PUBLIC_UI === "appsignal" || process.env.NEXT_PUBLIC_UI === "pleurat" ? process.env.NEXT_PUBLIC_UI : "classic";
+  process.env.NEXT_PUBLIC_UI === "appsignal" || process.env.NEXT_PUBLIC_UI === "classic" ? process.env.NEXT_PUBLIC_UI : "pleurat";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
