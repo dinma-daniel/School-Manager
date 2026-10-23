@@ -155,3 +155,64 @@
 .panel:not([hidden]) {
   animation: unfold 0.55s var(--ease-expo) backwards;
 }
+/*
+ * Swipe to remove (touch only — see SchoolEntry). The header slides left over
+ * a red strip that runs the row's full height, divider to divider. The strip
+ * is the button; the header covers all of it but the right edge.
+ */
+.swipe {
+  position: relative;
+  margin: -1.15rem 0 -1.35rem;
+}
+
+.swipe[data-swiped] {
+  overflow: hidden;
+}
+
+.entry[data-open] .swipe {
+  margin-bottom: 0;
+}
+
+.swipe .head {
+  position: relative;
+  z-index: 1;
+  padding: 1.15rem 0 1.35rem;
+  background: var(--paper);
+  /* Vertical scrolling stays the browser's; sideways is ours. */
+  touch-action: pan-y;
+  transition: transform 0.45s var(--ease-out);
+}
+
+.entry[data-open] .swipe .head {
+  padding-bottom: 0;
+}
+
+.swipe .head[data-dragging] {
+  transition: none;
+}
+
+.swipeRemove {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 1.4rem 0 0;
+  border: none;
+  background: var(--alert);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  visibility: hidden;
+}
+
+.swipe[data-swiped] .swipeRemove {
+  visibility: visible;
+}
+
+.swipeLabel {
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+}

@@ -1,4 +1,4 @@
-# Application Planner
+# School Planner
 
 Paste a university or school link. Get back the application — how to apply, the
 deadlines, the entry requirements, the costs and the scholarships — laid out in
@@ -14,7 +14,7 @@ npm run dev
 Then open http://localhost:3000.
 
 **You can look around with no model and no key at all** — the empty state has a
-*load two samples* button that fills the planner with example data so you can
+_load two samples_ button that fills the planner with example data so you can
 see every screen. Samples are badged `SAMPLE`, because their figures are
 illustrative rather than read from those universities' sites.
 
@@ -25,11 +25,11 @@ To actually read a link, pick a backend below.
 Set `EXTRACTOR` in `.env.local`. The default is `ollama`, so a fresh clone costs
 nothing and needs no account.
 
-| `EXTRACTOR` | What it is | Cost | Trade-off |
-|---|---|---|---|
-| `ollama` *(default)* | A model on your own machine | Free | Needs ~8GB RAM free, slower, less accurate on messy pages |
-| `openai` | Any OpenAI-compatible endpoint — Hugging Face, Groq, OpenRouter, LM Studio, llama.cpp | Free tiers available | Rate limits; free tiers can change |
-| `claude` | Claude via the Anthropic API | ~2p per school on Haiku | Costs money, most accurate |
+| `EXTRACTOR`          | What it is                                                                            | Cost                    | Trade-off                                                 |
+| -------------------- | ------------------------------------------------------------------------------------- | ----------------------- | --------------------------------------------------------- |
+| `ollama` _(default)_ | A model on your own machine                                                           | Free                    | Needs ~8GB RAM free, slower, less accurate on messy pages |
+| `openai`             | Any OpenAI-compatible endpoint — Hugging Face, Groq, OpenRouter, LM Studio, llama.cpp | Free tiers available    | Rate limits; free tiers can change                        |
+| `claude`             | Claude via the Anthropic API                                                          | ~2p per school on Haiku | Costs money, most accurate                                |
 
 They all share one prompt and one schema ([`lib/extract/prompt.ts`](lib/extract/prompt.ts),
 [`lib/schema.ts`](lib/schema.ts)), so switching changes cost and quality, never
@@ -66,7 +66,7 @@ request. Going much higher returns `413`. Two things follow:
 
 - `groq/compound` advertises 70k TPM but routes to `gpt-oss-120b` underneath, so
   the 8k limit applies anyway — and it doesn't support `json_schema`.
-- Because the budget is small, the scraper keeps the *relevant* sections of a
+- Because the budget is small, the scraper keeps the _relevant_ sections of a
   page rather than the first N characters (see `condense()` in
   [`lib/scrape.ts`](lib/scrape.ts)). On the same 16k budget that changed a
   Sheffield extraction from 0 steps and 0 scholarships to 6 steps, 2
