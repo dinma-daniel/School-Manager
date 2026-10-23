@@ -20,12 +20,15 @@ export function AppNav() {
       <div className={styles.inner}>
         <Link href="/" className={styles.brand}>
           <span className={styles.mark} aria-hidden="true" />
-          Application planner
+          School planner
         </Link>
 
         <nav className={styles.links} aria-label="Main">
           {LINKS.map((link) => {
-            const active = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+            const active =
+              link.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(link.href);
             return (
               <Link
                 key={link.href}
@@ -34,7 +37,12 @@ export function AppNav() {
                 data-active={active || undefined}
                 aria-current={active ? "page" : undefined}
               >
-                <link.icon className={styles.linkIcon} size={15} strokeWidth={1.75} aria-hidden="true" />
+                <link.icon
+                  className={styles.linkIcon}
+                  size={15}
+                  strokeWidth={1.75}
+                  aria-hidden="true"
+                />
                 {link.label}
               </Link>
             );

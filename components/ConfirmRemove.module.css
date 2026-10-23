@@ -1,0 +1,103 @@
+/*
+ * A small sheet that asks once. Cancel takes the focus, so a stray tap or
+ * Enter keeps the school.
+ */
+
+.dialog {
+  width: min(24rem, calc(100% - 2rem));
+  margin: auto;
+  padding: 1.35rem 1.35rem 1.15rem;
+  border: 1px solid var(--keyline);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--body);
+}
+
+.dialog[open] {
+  display: grid;
+  gap: 0.6rem;
+  animation: rise 0.35s var(--ease-out);
+}
+
+.dialog::backdrop {
+  background: rgba(23, 22, 15, 0.35);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.title {
+  color: var(--title);
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.cancel,
+.remove {
+  padding: 0.65rem 1rem;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.cancel {
+  border: 1px solid var(--keyline);
+  background: none;
+  color: var(--body);
+}
+
+.remove {
+  border: 1px solid var(--alert);
+  background: var(--alert);
+  color: #fff;
+}
+
+.cancel:hover,
+.remove:hover {
+  opacity: 0.84;
+}
+
+/* ===========================================================================
+ * Styles under review (see app/ui-styles.css).
+ * ======================================================================== */
+
+:global([data-ui="appsignal"]) .dialog {
+  border-radius: var(--radius-card);
+}
+
+:global([data-ui="appsignal"]) .cancel,
+:global([data-ui="appsignal"]) .remove {
+  border-radius: 32px;
+}
+
+:global([data-ui="pleurat"]) .dialog {
+  border-radius: 4px;
+}
+
+:global([data-ui="pleurat"]) .cancel,
+:global([data-ui="pleurat"]) .remove {
+  border-radius: var(--radius);
+}
