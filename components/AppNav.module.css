@@ -88,30 +88,6 @@
  * Styles under review (see app/ui-styles.css).
  * ======================================================================== */
 
-/* AppSignal: the bar spans the hairline-framed column; caps labels, yellow when here. */
-:global([data-ui="appsignal"]) .brand,
-:global([data-ui="appsignal"]) .link {
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-:global([data-ui="appsignal"]) .inner {
-  max-width: calc(var(--col) + 2 * clamp(1.25rem, 4vw, 2.75rem));
-}
-
-:global([data-ui="appsignal"]) .mark {
-  background: var(--yellow, var(--accent));
-}
-
-:global([data-ui="appsignal"]) .link[data-active] {
-  color: var(--accent);
-  background: var(--accent-soft);
-}
-
-
 /* Pleurat: the bar is the top of the framed sheet; the margins stay ruled. */
 :global([data-ui="pleurat"]) .bar {
   padding: 0 1.25rem;

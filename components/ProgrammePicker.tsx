@@ -14,12 +14,14 @@ const OTHER = "Other";
 
 type Props = {
   list: ProgrammeList;
+  /** The saved course being changed: what's picked here takes its place. */
+  replacing?: string;
   onRead: (picked: Programme[]) => void;
   onReadPage: () => void;
   onCancel: () => void;
 };
 
-export function ProgrammePicker({ list, onRead, onReadPage, onCancel }: Props) {
+export function ProgrammePicker({ list, replacing, onRead, onReadPage, onCancel }: Props) {
   const [query, setQuery] = useState("");
   const [level, setLevel] = useState<string | null>(null);
   const [picked, setPicked] = useState<Set<string>>(() => new Set());
@@ -60,9 +62,16 @@ export function ProgrammePicker({ list, onRead, onReadPage, onCancel }: Props) {
           {list.school ? ` · ${list.school}` : ""}
         </span>
         <button type="button" className={styles.textButton} onClick={onCancel}>
-          Start again
+          {replacing ? "Keep it" : "Start again"}
         </button>
       </div>
+
+      {replacing && (
+        <p className={styles.replacing}>
+          Changing <strong>{replacing}</strong>. Pick the course to have instead — it takes its place in your planner,
+          keeping its status and note.
+        </p>
+      )}
 
       {list.startIsProgramme && (
         <div className={styles.single}>

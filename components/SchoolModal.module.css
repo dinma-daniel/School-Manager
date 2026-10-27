@@ -119,14 +119,6 @@
  * Styles under review (see app/ui-styles.css).
  * ======================================================================== */
 
-:global([data-ui="appsignal"]) .title {
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-weight: 400;
-  letter-spacing: 0;
-  color: var(--display-ink);
-}
-
-
 :global([data-ui="pleurat"]) .title {
   font-weight: 500;
   letter-spacing: -0.045em;

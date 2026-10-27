@@ -36,6 +36,7 @@ export function AppNav() {
                 className={styles.link}
                 data-active={active || undefined}
                 aria-current={active ? "page" : undefined}
+                data-tour={link.href === "/calendar" ? "calendar" : undefined}
               >
                 <link.icon
                   className={styles.linkIcon}

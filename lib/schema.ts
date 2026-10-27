@@ -88,6 +88,8 @@ export type SavedSchool = {
   note: string;
   /** Sample data, not extracted from the live site. Renders a SAMPLE badge. */
   demo?: boolean;
+  /** The link whose programme list this was picked from — so it can be swapped for another from the same list. */
+  pickedFrom?: string;
 };
 
 export const STATUS_LABELS: Record<SavedSchool["status"], string> = {

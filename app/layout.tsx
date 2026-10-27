@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Inter, JetBrains_Mono, Patrick_Hand, Source_Sans_3, Special_Gothic_Expanded_One } from "next/font/google";
+import { IBM_Plex_Mono, Inter, JetBrains_Mono, Patrick_Hand } from "next/font/google";
 import { AppNav } from "@/components/AppNav";
 import "./globals.css";
 import "./ui-styles.css";
@@ -9,20 +9,16 @@ import "./ui-styles.css";
  * is still available on its own dev server (`dev:classic` in package.json).
  * Read at build time, so a server shows one style for its whole life.
  */
-type Ui = "classic" | "appsignal" | "pleurat";
-const UI: Ui =
-  process.env.NEXT_PUBLIC_UI === "appsignal" || process.env.NEXT_PUBLIC_UI === "classic" ? process.env.NEXT_PUBLIC_UI : "pleurat";
+type Ui = "classic" | "pleurat";
+const UI: Ui = process.env.NEXT_PUBLIC_UI === "classic" ? "classic" : "pleurat";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
-const sourceSans = Source_Sans_3({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
-const gothic = Special_Gothic_Expanded_One({ subsets: ["latin"], weight: "400", variable: "--font-display", display: "swap" });
 const hand = Patrick_Hand({ subsets: ["latin"], weight: "400", variable: "--font-hand", display: "swap" });
 const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono", display: "swap" });
 
 const FONTS: Record<Ui, string> = {
   classic: `${inter.variable} ${jetbrains.variable} ${hand.variable}`,
-  appsignal: `${sourceSans.variable} ${jetbrains.variable} ${gothic.variable} ${hand.variable}`,
   // General Sans isn't on Google Fonts; it comes from Fontshare in the head below.
   pleurat: `${plexMono.variable} ${hand.variable}`,
 };

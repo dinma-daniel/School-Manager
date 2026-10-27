@@ -75,7 +75,7 @@ export function SchoolMeta({ school }: { school: SavedSchool }) {
           Sample
         </span>
       )}
-      <span className={`eyebrow ${styles.status}`} data-status={school.status}>
+      <span className={`eyebrow ${styles.status}`} data-status={school.status} data-tour="status">
         {STATUS_LABELS[school.status]}
       </span>
       <ScholarshipBadge info={school.info} />

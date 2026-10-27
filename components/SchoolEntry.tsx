@@ -12,6 +12,8 @@ type Props = {
   school: SavedSchool;
   onUpdate: (id: string, patch: Partial<SavedSchool>) => void;
   onRemove: (id: string) => void;
+  /** Swap it for another course from the list it was picked from. Only offered where that list is known. */
+  onChangeCourse?: (school: SavedSchool) => void;
 };
 
 /** How far a short swipe leaves the row open, showing the Remove button. */
@@ -27,7 +29,7 @@ const FAR = 0.5;
  * Remove button, a long one goes straight to the confirm. Either way nothing
  * is deleted until the confirm says so.
  */
-export function SchoolEntry({ school, onUpdate, onRemove }: Props) {
+export function SchoolEntry({ school, onUpdate, onRemove, onChangeCourse }: Props) {
   const [open, setOpen] = useState(false);
   const [fullView, setFullView] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -42,6 +44,7 @@ export function SchoolEntry({ school, onUpdate, onRemove }: Props) {
   const swiped = useRef(false);
 
   const revealed = offset !== 0 && !dragging;
+  const changeable = Boolean(onChangeCourse && school.pickedFrom);
 
   // While the button is showing, a tap anywhere else puts the row back.
   useEffect(() => {
@@ -101,7 +104,12 @@ export function SchoolEntry({ school, onUpdate, onRemove }: Props) {
     <li className={styles.entry} data-open={open || undefined}>
       <span className={styles.dot} aria-hidden="true" />
 
-      <div ref={swipeRef} className={styles.swipe} data-swiped={offset < 0 || undefined}>
+      <div
+        ref={swipeRef}
+        className={styles.swipe}
+        data-swiped={offset < 0 || undefined}
+        data-changeable={changeable || undefined}
+      >
         <button
           type="button"
           className={styles.swipeRemove}
@@ -135,11 +143,27 @@ export function SchoolEntry({ school, onUpdate, onRemove }: Props) {
           }}
           aria-expanded={open}
           aria-controls={panelId}
+          data-tour="entry"
         >
           <SchoolMeta school={school} />
           <h2 className={styles.name}>{school.info.name}</h2>
           {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
         </button>
+
+        {/* Beside the row rather than in it: the row is itself a button. */}
+        {changeable && (
+          <button
+            type="button"
+            className={styles.change}
+            data-tour="change"
+            onClick={() => onChangeCourse?.(school)}
+            tabIndex={offset ? -1 : 0}
+            aria-hidden={offset ? true : undefined}
+            aria-label={`Change ${school.info.name} to a different course`}
+          >
+            Change to a different course
+          </button>
+        )}
       </div>
 
       <div className={styles.panel} id={panelId} hidden={!open}>

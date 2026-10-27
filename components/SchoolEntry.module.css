@@ -103,19 +103,6 @@
  * Styles under review (see app/ui-styles.css).
  * ======================================================================== */
 
-/* AppSignal: same rail, a heavier name, and a caps pill for the expand control. */
-:global([data-ui="appsignal"]) .name {
-  font-size: 1.3rem;
-  font-weight: 600;
-}
-
-:global([data-ui="appsignal"]) .expand {
-  border-radius: 32px;
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-weight: 700;
-}
-
-
 /* Pleurat: the rail stays; its dots turn amber, the name sits a touch heavier. */
 :global([data-ui="pleurat"]) .name {
   font-size: 1.25rem;
@@ -167,6 +154,73 @@
 
 .swipe[data-swiped] {
   overflow: hidden;
+}
+
+/* "Change to a different course", at the right of the closed row. */
+.swipe[data-changeable] .head {
+  padding-right: 15rem;
+}
+
+.change {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--keyline);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--mute);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.2s var(--ease-out), border-color 0.2s var(--ease-out), opacity 0.2s var(--ease-out);
+}
+
+.change:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Out of the way while the row is swiped to show Remove. */
+.swipe[data-swiped] .change {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* With the row unfolded it sits level with the name, not the middle of everything. */
+.entry[data-open] .change {
+  top: 1.15rem;
+  transform: none;
+}
+
+/* Phones: no room at the side, so it goes under the course details, in room the row leaves for it. */
+@media (max-width: 640px) {
+  .swipe[data-changeable] .head {
+    padding-right: 0;
+    padding-bottom: 3.6rem;
+  }
+
+  .change,
+  .entry[data-open] .change {
+    top: auto;
+    right: auto;
+    bottom: 1.35rem;
+    left: 0;
+    transform: none;
+  }
+
+  /* Unfolded, the row drops its bottom padding; keep just enough for the button. */
+  .entry[data-open] .swipe[data-changeable] .head {
+    padding-bottom: 2.6rem;
+  }
+
+  .entry[data-open] .change {
+    bottom: 0.2rem;
+  }
 }
 
 .entry[data-open] .swipe {

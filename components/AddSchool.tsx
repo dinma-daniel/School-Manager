@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useImperativeHandle, useRef, useState, useSyncExternalStore } from "react";
 import { postForResult, StreamError } from "@/lib/events";
 import type { Programme, ProgrammeList } from "@/lib/programmes";
 import type { SavedSchool, SchoolInfo } from "@/lib/schema";
@@ -18,34 +18,93 @@ type Phase =
 
 type DoneEvent = { info: SchoolInfo; pagesRead: string[]; truncated: boolean };
 
+/** A page to read: the link, the name it was picked by, and the list it was picked from. */
+type Target = { url: string; name?: string; pickedFrom?: string };
+
+/** What the planner can ask of the form from outside it. */
+export type AddSchoolHandle = {
+  /** Reopen the programme list a saved course came from, to swap it for another. */
+  changeCourse: (school: SavedSchool) => void;
+};
+
+/** The course being swapped out, while its replacement is picked and read. */
+type Replacing = Pick<SavedSchool, "id" | "status" | "note"> & { name: string };
+
+/**
+ * Phone width, the same 640px the layout breaks at. The placeholder can't be
+ * swapped in CSS, and the full one is cut off mid-word on a phone.
+ */
+const PHONE = "(max-width: 640px)";
+const subscribePhone = (onChange: () => void) => {
+  const query = window.matchMedia(PHONE);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+};
+const usePhone = () =>
+  useSyncExternalStore(
+    subscribePhone,
+    () => window.matchMedia(PHONE).matches,
+    () => false,
+  );
+
 const errorMessage = (err: unknown) => (err instanceof Error ? err.message : "Something went wrong.");
 /** A login wall or a blocked site, if that's why it failed. */
 const accessOf = (err: unknown) => (err instanceof StreamError ? err.access : undefined);
 
-export function AddSchool({ onAdd }: { onAdd: (school: SavedSchool) => void }) {
+type Props = {
+  onAdd: (school: SavedSchool) => void;
+  onRemove: (id: string) => void;
+  /** Told when a search or read starts and stops, so nothing opens over it. */
+  onBusyChange?: (busy: boolean) => void;
+  ref?: React.Ref<AddSchoolHandle>;
+};
+
+export function AddSchool({ onAdd, onRemove, onBusyChange, ref }: Props) {
   const [url, setUrl] = useState("");
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
   const [access, setAccess] = useState<AccessIssue[] | null>(null);
+  const [replacing, setReplacingState] = useState<Replacing | null>(null);
+  // Mirrored in a ref: the read loop runs across many renders and must see the latest.
+  const replacingRef = useRef<Replacing | null>(null);
+  const setReplacing = (next: Replacing | null) => {
+    replacingRef.current = next;
+    setReplacingState(next);
+  };
+  const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+  /** The last list found, so changing a course just picked from it doesn't search the site again. */
+  const listCache = useRef<{ sourceUrl: string; list: ProgrammeList } | null>(null);
 
+  const phone = usePhone();
   const working = phase.kind === "finding" || phase.kind === "reading";
+  // Picking counts as busy too: the user is mid-way through adding.
+  const busy = working || phase.kind === "picking";
+  useEffect(() => onBusyChange?.(busy), [busy, onBusyChange]);
 
-  /** One full extraction, saved as its own entry. */
-  async function readOne(link: string, onStatus: (message: string) => void, signal: AbortSignal, name?: string) {
-    const result = await postForResult<DoneEvent>("/api/extract", { url: link }, onStatus, signal);
+  /** One full extraction, saved as its own entry — in place of the course being changed, if there is one. */
+  async function readOne(target: Target, onStatus: (message: string) => void, signal: AbortSignal) {
+    const result = await postForResult<DoneEvent>("/api/extract", { url: target.url }, onStatus, signal);
+    const swap = replacingRef.current;
     onAdd({
       id: crypto.randomUUID(),
-      sourceUrl: link,
+      sourceUrl: target.url,
       pagesRead: result.pagesRead,
       truncated: result.truncated,
       addedAt: new Date().toISOString(),
       // The model sometimes leaves the programme out when the page assumes it;
       // the user picked it by name, so we know it.
-      info: name && !result.info.programme ? { ...result.info, programme: name } : result.info,
-      status: "considering",
-      note: "",
+      info: target.name && !result.info.programme ? { ...result.info, programme: target.name } : result.info,
+      // A changed course keeps where the user had got to with it.
+      status: swap?.status ?? "considering",
+      note: swap?.note ?? "",
+      pickedFrom: target.pickedFrom,
     });
+    // Only once the replacement is safely saved does the old one go.
+    if (swap) {
+      onRemove(swap.id);
+      setReplacing(null);
+    }
   }
 
   /**
@@ -53,7 +112,7 @@ export function AddSchool({ onAdd }: { onAdd: (school: SavedSchool) => void }) {
    * free tiers meter tokens per minute and a local model runs one at a time —
    * so it would mostly be quicker at failing.
    */
-  async function readAll(targets: { url: string; name?: string }[]) {
+  async function readAll(targets: Target[]) {
     const controller = new AbortController();
     abortRef.current = controller;
     const failures: string[] = [];
@@ -66,10 +125,9 @@ export function AddSchool({ onAdd }: { onAdd: (school: SavedSchool) => void }) {
       setPhase({ kind: "reading", done: i, total: targets.length, current, status: "Opening the link" });
       try {
         await readOne(
-          target.url,
+          target,
           (status) => setPhase({ kind: "reading", done: i, total: targets.length, current, status }),
           controller.signal,
-          target.name,
         );
         added++;
       } catch (err) {
@@ -102,6 +160,9 @@ export function AddSchool({ onAdd }: { onAdd: (school: SavedSchool) => void }) {
       }
     }
 
+    // A change that didn't go through leaves the old course where it was.
+    setReplacing(null);
+
     if (outOfAllowance) {
       abortRef.current = null;
       const left = targets.length - added;
@@ -128,11 +189,16 @@ export function AddSchool({ onAdd }: { onAdd: (school: SavedSchool) => void }) {
     setPhase({ kind: "idle", notice: { text: parts.join(" "), failed: failures.length > 0 || walled.length > 0 } });
   }
 
-  async function submit(event: React.FormEvent) {
+  function submit(event: React.FormEvent) {
     event.preventDefault();
     const trimmed = url.trim();
     if (!trimmed || working) return;
+    // A new link is a new search, not the change that may have been under way.
+    setReplacing(null);
+    findProgrammes(trimmed);
+  }
 
+  async function findProgrammes(trimmed: string) {
     setPhase({ kind: "finding", status: "Opening the link" });
     let list: ProgrammeList;
     try {
@@ -151,6 +217,7 @@ export function AddSchool({ onAdd }: { onAdd: (school: SavedSchool) => void }) {
     }
 
     if (list.programmes.length > 0) {
+      listCache.current = { sourceUrl: trimmed, list };
       setPhase({ kind: "picking", list, sourceUrl: trimmed });
     } else if (list.startIsProgramme) {
       await readAll([{ url: trimmed }]);
@@ -166,18 +233,32 @@ export function AddSchool({ onAdd }: { onAdd: (school: SavedSchool) => void }) {
     }
   }
 
+  useImperativeHandle(ref, () => ({
+    changeCourse(school) {
+      const from = school.pickedFrom;
+      if (!from || working) return;
+      setReplacing({ id: school.id, status: school.status, note: school.note, name: school.info.programme ?? school.info.name });
+      setUrl(from);
+      rootRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      const cached = listCache.current;
+      if (cached?.sourceUrl === from) setPhase({ kind: "picking", list: cached.list, sourceUrl: from });
+      else findProgrammes(from);
+    },
+  }));
+
   return (
-    <div className={styles.form}>
-      <form className={styles.field} onSubmit={submit}>
+    <div ref={rootRef} className={styles.form}>
+      <form className={styles.field} onSubmit={submit} data-tour="add">
         <input
           ref={inputRef}
           className={styles.input}
           type="url"
           inputMode="url"
-          placeholder="Paste a school, course list or course link"
+          placeholder={phone ? "Paste a School link" : "Paste a school, course list or course link"}
           value={url}
           onChange={(e) => {
             setUrl(e.target.value);
+            if (phase.kind === "picking") setReplacing(null);
             if (phase.kind === "error" || phase.kind === "picking" || phase.kind === "nolist") setPhase({ kind: "idle" });
           }}
           disabled={working}
@@ -257,9 +338,15 @@ export function AddSchool({ onAdd }: { onAdd: (school: SavedSchool) => void }) {
       {phase.kind === "picking" && (
         <ProgrammePicker
           list={phase.list}
-          onRead={(picked: Programme[]) => readAll(picked.map((p) => ({ url: p.url, name: p.name })))}
+          replacing={replacing?.name}
+          onRead={(picked: Programme[]) =>
+            readAll(picked.map((p) => ({ url: p.url, name: p.name, pickedFrom: phase.sourceUrl })))
+          }
           onReadPage={() => readAll([{ url: phase.sourceUrl }])}
-          onCancel={() => setPhase({ kind: "idle" })}
+          onCancel={() => {
+            setReplacing(null);
+            setPhase({ kind: "idle" });
+          }}
         />
       )}
     </div>

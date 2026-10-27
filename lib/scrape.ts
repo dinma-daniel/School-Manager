@@ -245,13 +245,47 @@ export async function getHtml(url: string, options: FetchOptions = {}): Promise<
   return (await fetchPage(url, options)).html;
 }
 
+/** Hosts that refused a plain fetch but let the browser in: their pages go straight to the browser. */
+const browserOnly = new Set<string>();
+
 /**
  * A page and the address it finally came from. They differ more often than
  * you'd think — www.ed.ac.uk/studying/undergraduate/degrees is really
  * study.ed.ac.uk/programmes — and its relative links only resolve against the
  * second.
+ *
+ * Some sites refuse anything that isn't a browser — utoronto.ca returns 403 to
+ * every plain fetch. Those get one more try in a real (headless) browser, which
+ * loads them like any visitor's would. A site that refuses the browser too — a
+ * Cloudflare "Just a moment…" check — stays refused.
  */
-export async function fetchPage(url: string, options: FetchOptions = {}, uaIndex = 0): Promise<{ html: string; url: string }> {
+export async function fetchPage(url: string, options: FetchOptions = {}): Promise<{ html: string; url: string }> {
+  const host = new URL(url).hostname;
+  if (!options.allowXml && browserOnly.has(host)) {
+    const page = await viaBrowser(url);
+    if (!page) throw new AccessError("blocked", url);
+    return page;
+  }
+  try {
+    return await fetchDirect(url, options);
+  } catch (err) {
+    if (!(err instanceof AccessError) || err.kind !== "blocked" || options.allowXml) throw err;
+    const page = await viaBrowser(url);
+    if (!page) throw err;
+    browserOnly.add(host);
+    return page;
+  }
+}
+
+async function viaBrowser(url: string): Promise<{ html: string; url: string } | null> {
+  // Loaded on demand: most fetches never need it, and it pulls in playwright.
+  const { renderPage } = await import("./render");
+  const page = await renderPage(url);
+  if (page && isLoginWall(page.html, page.url)) throw new AccessError("login", page.url);
+  return page;
+}
+
+async function fetchDirect(url: string, options: FetchOptions = {}, uaIndex = 0): Promise<{ html: string; url: string }> {
   const { allowXml = false, maxBytes = MAX_BYTES } = options;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
@@ -269,7 +303,7 @@ export async function fetchPage(url: string, options: FetchOptions = {}, uaIndex
     // A refusal is often about who we said we were, not the page itself.
     if ((res.status === 403 || res.status === 401) && uaIndex + 1 < UA_LADDER.length) {
       clearTimeout(timer);
-      return fetchPage(url, options, uaIndex + 1);
+      return fetchDirect(url, options, uaIndex + 1);
     }
 
     const landed = res.url || url;
@@ -307,7 +341,7 @@ export async function fetchPage(url: string, options: FetchOptions = {}, uaIndex
 
     if (TRANSIENT.test(code) && !options.retried) {
       await new Promise((resolve) => setTimeout(resolve, 900));
-      return fetchPage(url, { ...options, retried: true }, uaIndex);
+      return fetchDirect(url, { ...options, retried: true }, uaIndex);
     }
     throw new ScrapeError("Couldn't reach that page. Check the link and try again.");
   } finally {

@@ -6,7 +6,9 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   // next dev refuses its dev-only resources (HMR, client runtime) to any
   // origin but localhost, so the page never hydrates through a tunnel.
-  allowedDevOrigins: ["*.ngrok-free.dev", "*.ngrok-free.app", "*.ngrok.app"],
+  // Drives a local browser binary; bundling it breaks its own module loading.
+  serverExternalPackages: ["playwright-core"],
+  allowedDevOrigins:["*.ngrok-free.dev", "*.ngrok-free.app", "*.ngrok.app"],
 };
 
 export default nextConfig;

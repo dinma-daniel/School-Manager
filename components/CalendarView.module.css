@@ -496,54 +496,6 @@
  * Styles under review (see app/ui-styles.css).
  * ======================================================================== */
 
-/* AppSignal: the same hairline-framed column, display-face title, lit pill button. */
-:global([data-ui="appsignal"]) .page {
-  padding: 0 1.25rem;
-}
-
-:global([data-ui="appsignal"]) .column {
-  min-height: 100dvh;
-  padding: clamp(2rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 2.75rem) 4rem;
-  border-left: 1px solid var(--keyline);
-  border-right: 1px solid var(--keyline);
-  align-content: start;
-}
-
-:global([data-ui="appsignal"]) .title {
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-weight: 400;
-  letter-spacing: 0;
-  color: var(--display-ink);
-}
-
-:global([data-ui="appsignal"]) .button {
-  padding: 0.65rem 1.4rem;
-  border: none;
-  border-radius: 32px;
-  background: var(--cta-bg);
-  box-shadow:
-    inset 0 0 0 2px var(--cta-ring),
-    inset 0 0 12px 0 var(--cta-glow);
-  color: var(--ink);
-  font-size: 16px;
-  font-weight: 600;
-}
-
-:global([data-ui="appsignal"]) .button:hover:not(:disabled) {
-  opacity: 1;
-  background: var(--ink);
-  color: var(--paper);
-}
-
-:global([data-ui="appsignal"]) .monthNav button {
-  border-radius: 32px;
-}
-
-:global([data-ui="appsignal"]) .cell[data-today] .cellDay {
-  background: var(--yellow, var(--accent));
-  color: #151515;
-}
-
 /* "Later" on mint: lime fill, navy text — the accent pair the style runs on. */
 
 /* Pleurat: the same framed sheet, the same headline, amber for the action and today. */
