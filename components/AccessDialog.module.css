@@ -142,22 +142,6 @@
  * Styles under review (see app/ui-styles.css).
  * ======================================================================== */
 
-:global([data-ui="appsignal"]) .dialog {
-  border-radius: var(--radius-card);
-}
-
-:global([data-ui="appsignal"]) .title {
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-weight: 400;
-  color: var(--display-ink);
-}
-
-:global([data-ui="appsignal"]) .primary,
-:global([data-ui="appsignal"]) .secondary {
-  border-radius: 32px;
-}
-
-
 :global([data-ui="pleurat"]) .dialog {
   border-radius: 4px;
 }

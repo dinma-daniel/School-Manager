@@ -278,6 +278,22 @@
   max-width: 30rem;
 }
 
+.tourAgain {
+  margin-top: 0.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--body);
+  font: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.2em;
+}
+
+.tourAgain:hover {
+  color: var(--ink);
+}
+
 /* On narrow screens the gutter isn't there to hold the rail, so bring the
    whole thing inside the column instead of letting dots fall off-screen. */
 @media (max-width: 640px) {
@@ -303,93 +319,6 @@
   display: none;
 }
 
-/* AppSignal ---------------------------------------------------------------- */
-
-:global([data-ui="appsignal"]) .page {
-  padding: 0 1.25rem;
-}
-
-/* The column, framed top to bottom by hairlines, as AppSignal frames its body. */
-:global([data-ui="appsignal"]) .column {
-  min-height: 100dvh;
-  padding: clamp(2rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 2.75rem) 4rem;
-  border-left: 1px solid var(--keyline);
-  border-right: 1px solid var(--keyline);
-}
-
-:global([data-ui="appsignal"]) .title {
-  font-family: var(--font-display), system-ui, sans-serif;
-  font-weight: 400;
-  font-size: clamp(2.1rem, 6.6vw, 3.7rem);
-  line-height: 1.08;
-  letter-spacing: 0;
-  color: var(--display-ink);
-}
-
-:global([data-ui="appsignal"]) .blurb {
-  max-width: 36rem;
-  margin-top: 1.4rem;
-  font-size: 19px;
-  line-height: 1.5;
-}
-
-:global([data-ui="appsignal"]) .doodle {
-  display: block;
-  margin-top: 1.6rem;
-  font-family: var(--font-hand), cursive;
-  font-size: 22px;
-  color: var(--mute);
-  transform: rotate(-2.5deg);
-  transform-origin: left;
-}
-
-:global([data-ui="appsignal"]) .add {
-  margin-top: 1.25rem;
-  padding-top: 0;
-  border-top: none;
-}
-
-:global([data-ui="appsignal"]) .lede {
-  border: 1px solid var(--keyline);
-  border-radius: var(--radius-card);
-  background: var(--card);
-  padding: 1.1rem 1.3rem;
-}
-
-:global([data-ui="appsignal"]) .ledeCount {
-  color: var(--accent);
-}
-
-:global([data-ui="appsignal"]) .tab {
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-}
-
-:global([data-ui="appsignal"]) .tab[data-active] {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-
-:global([data-ui="appsignal"]) .demoButton {
-  padding: 0.55rem 1.3rem;
-  border: none;
-  border-radius: 32px;
-  background: var(--cta-bg);
-  box-shadow:
-    inset 0 0 0 1.5px var(--cta-ring),
-    inset 0 0 12px 0 var(--cta-glow);
-  color: var(--ink);
-  font-size: 15px;
-  font-weight: 600;
-}
-
-:global([data-ui="appsignal"]) .demoButton:hover {
-  background: var(--ink);
-  color: var(--paper);
-}
-
 /* The count of saved schools, set huge and nearly invisible behind the header. */
 
 /* A lime marker under the second line — the one place lime is loud. */
@@ -400,12 +329,6 @@
 
 /* Entries are cards here, so there's no rail to hang dots on. */
 
-/* AppSignal light: the yellow moves from the letters to a highlighter band behind them. */
-:global([data-ui="appsignal"]:not([data-theme="dark"])) .titleAccent {
-  background: linear-gradient(transparent 55%, var(--yellow) 55%, var(--yellow) 90%, transparent 90%);
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
 /* Pleurat: the column is a framed cream sheet; the margins keep the ruled lines. */
 :global([data-ui="pleurat"]) .page {
   padding: 0 1.25rem;

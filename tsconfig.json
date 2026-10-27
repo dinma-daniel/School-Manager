@@ -37,8 +37,6 @@
     "**/*.mts",
     ".next-pleurat/types/**/*.ts",
     ".next-pleurat/dev/types/**/*.ts",
-    ".next-appsignal/types/**/*.ts",
-    ".next-appsignal/dev/types/**/*.ts",
     ".next-classic/types/**/*.ts",
     ".next-classic/dev/types/**/*.ts"
   ],

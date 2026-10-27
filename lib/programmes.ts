@@ -29,6 +29,7 @@ import {
   stripFooter,
   validateUrl,
 } from "./scrape";
+import { looksScripted, renderPage } from "./render";
 
 export type Programme = {
   name: string;
@@ -55,11 +56,14 @@ const ENOUGH = 15;
 const SITEMAP_BELOW = 100;
 /** Course-list pages to open at each step away from the pasted link. */
 const HUBS_PER_STEP = 4;
-const HUB_STEPS = 3;
+// Four: washington.edu → Graduate School → Find a Program → the finder itself.
+const HUB_STEPS = 4;
 /** Every HTML page we fetch, hubs and pagination together. Politeness, and time. */
 const FETCH_BUDGET = 30;
 const MAX_RESULTS = 1_200;
 const SITEMAP_BYTES = 8_000_000;
+/** Pages to open in a browser, for lists built with JavaScript. Each takes seconds. */
+const RENDER_BUDGET = 3;
 /** Section sitemaps to try: the pasted link's section and those of the best course lists. */
 const MAX_SECTIONS = 3;
 /** A path segment that's a language folder ("/fr/", "/zh-hans/"), not part of the site's structure. */
@@ -207,7 +211,7 @@ const GENERIC_TEXT =
 
 /** Course cards whose only link says this — the name is in the URL instead. In the common languages too. */
 const READ_MORE =
-  /^((read|learn|find out|discover|see|view) more|more( info(rmation)?| details)?|details|view (course|programme|program)|course details|programme details|ver (m[aá]s|carrera|programa|detalles?)|leer m[aá]s|conoce m[aá]s( sobre (el|la|este|esta) (programa|carrera|maestr[ií]a))?|m[aá]s informaci[oó]n|ir al programa|saiba mais|leia mais|ver curso|en savoir plus|voir (plus|la formation)|d[ée]couvrir|mehr erfahren|weiterlesen|mehr|scopri( di pi[uù])?|leggi (tutto|di pi[uù])|lees meer|meer info|czytaj wi[eę]cej|wi[eę]cej|подробнее|далее|selengkapnya|baca selengkapnya|devam[ıi]|detayl[ıi])\W*$/iu;
+  /^((read|learn|find out|discover|see|view) more|more( info(rmation)?| details)?|details|view (course|programme|program)( details)?|(course|programme|program) details|ver (m[aá]s|carrera|programa|detalles?)|leer m[aá]s|conoce m[aá]s( sobre (el|la|este|esta) (programa|carrera|maestr[ií]a))?|m[aá]s informaci[oó]n|ir al programa|saiba mais|leia mais|ver curso|en savoir plus|voir (plus|la formation)|d[ée]couvrir|mehr erfahren|weiterlesen|mehr|scopri( di pi[uù])?|leggi (tutto|di pi[uù])|lees meer|meer info|czytaj wi[eę]cej|wi[eę]cej|подробнее|далее|selengkapnya|baca selengkapnya|devam[ıi]|detayl[ıi])\W*$/iu;
 
 /** Links that lead towards a course list. */
 const HUB_TEXT =
@@ -353,8 +357,30 @@ export function levelOf(name: string, url: string): string | null {
   if (UG_INTL.test(name)) return "Undergraduate";
   if (UG_CODE.test(name) || INTEGRATED.test(name)) return "Undergraduate";
   if (PG_CODE.test(name)) return "Postgraduate";
+  return siteLevel(url);
+}
+
+/**
+ * A graduate school's own site — grad.uw.edu, apply.grad.uw.edu — is all
+ * postgraduate. Only where nothing else says otherwise: it lists the odd PhD.
+ */
+const GRAD_HOST = /(^|\.)(grad|graduate|gradschool|postgrad)\./i;
+
+/** The level a page's place on the site implies, as a last resort. */
+function siteLevel(url: string): string | null {
+  const u = new URL(url);
+  if (GRAD_HOST.test(u.hostname)) return "Postgraduate";
+  if (MAJORS_PATH.test(u.pathname)) return "Undergraduate";
   return null;
 }
+
+/**
+ * A major is an undergraduate thing in American usage, so a page filed under
+ * /majors/ is one when nothing else says otherwise. UW's admissions site
+ * (admit.washington.edu/majors/…) names no level anywhere else — not in its
+ * addresses, titles or site name — and most of its majors are bare subjects.
+ */
+const MAJORS_PATH = /\/majors?\//i;
 
 /**
  * Every level a programme spans. Harbour.space's "Computer Science
@@ -371,6 +397,8 @@ export function levelsOf(name: string, url: string): string[] {
   if (ug || (!pg && INTEGRATED.test(name))) levels.push("Undergraduate");
   if (pg) levels.push("Postgraduate");
   if (RESEARCH_NAME.test(name) || RESEARCH_INTL.test(name)) levels.push("Research");
+  const fallback = levels.length === 0 ? siteLevel(url) : null;
+  if (fallback) levels.push(fallback);
   return levels;
 }
 
@@ -442,6 +470,10 @@ function links(html: string, base: URL, alias?: Set<string>): Link[] {
     if (!text) text = htmlToText(attrs.match(/(?:aria-label|title)\s*=\s*["']([^"']+)["']/i)?.[1] ?? "");
     // Icon fonts draw arrows from words: "vertical_split Programas keyboard_arrow_right".
     text = text.replace(/\b[a-z]+(?:_[a-z]+)+\b/g, " ").replace(/\s+/g, " ").trim();
+    // BU's program search links every name as "Learn More About Gastronomy (MA)".
+    // Only before a degree: "Find out more about undergraduate admissions" is a page, not a course.
+    const about = text.replace(/^(learn more|find out more|read more|more) about\s+(?=\S)/i, "");
+    if (about !== text && namesDegree(about)) text = about;
     if (!text) continue;
     if (credentialOnly(text)) {
       // The subject is usually written beside the link; failing that, the
@@ -532,6 +564,25 @@ function programmeLinks(all: Link[]): Programme[] {
     }
   }
 
+  // A directory that sends every programme to one detail page, told apart only
+  // by its query — UW's "prog_detail_find_a_program?progid=…", 533 times. No
+  // path run can form there, and plenty of entries name no degree ("Accounting
+  // - Milgard School of Business"), but a long run where many do is the list.
+  const byDetailPage = new Map<string, typeof candidates>();
+  for (const c of candidates) {
+    const u = new URL(c.url);
+    if (c.guessed || u.search === "") continue;
+    const key = `${u.origin}${u.pathname}`;
+    byDetailPage.set(key, [...(byDetailPage.get(key) ?? []), c]);
+  }
+  for (const members of byDetailPage.values()) {
+    if (members.length < 10 || members.filter(hasDegree).length / members.length < 0.3) continue;
+    for (const c of members) {
+      if (found.has(c.url) || credentialOnly(c.text)) continue;
+      found.set(c.url, { name: c.text, url: c.url, level: levelOf(c.text, c.url), nameFromUrl: false });
+    }
+  }
+
   // A list that's mostly programmes is all programmes. Vienna lists courses
   // with an entrance exam beside the rest, but links them to another
   // subdomain ("aufnahmeverfahren.univie.ac.at/informatik") with nothing in
@@ -566,6 +617,23 @@ function programmeLinks(all: Link[]): Programme[] {
   return [...found.values()];
 }
 
+/** Link text for a school's graduate division, which may have a site of its own. */
+// Only at the start, and "Graduate School" only as the whole link: "About the
+// UW Graduate School" is an about page, Berkeley's "American Indian Graduate
+// Program" a support programme.
+const GRADUATE_SITE =
+  /^(the )?graduate (school|division|college)$|^((learn more|find out) about |explore |our )?(the )?graduate (studies|programs|programmes|admissions?)\b|^graduate & professional\b/i;
+
+/**
+ * Link text for a programme finder: the list itself, worth opening however
+ * many we have. Not "courses": in America those are classes, and BU's "Browse
+ * courses" is a catalogue of GMS AN 713 and the like.
+ */
+const FINDER_TEXT = /\b(find|search|browse|explore) (a |an |our |all )?(program|programme|degree|major)s?\b|\b(program|programme|degree) (finder|search|directory)\b/i;
+
+/** Entries for studying without enrolling on the programme: visiting, non-degree, non-matriculated. */
+const NOT_ENROLMENT = /\b(GNM|non[- ]?matriculated|non[- ]?degree|visiting (grad(uate)?|students?|scholars?))\b/i;
+
 /** A–Z lists of everything but courses, which homepages put right beside the course one. */
 const NOT_A_HUB =
   /staff|people|services|directory|units|news|events|library|jobs|vacanc|parents|open ?days?|visit|accommodation|clubs|societ|schedule|timetable|single[- ]courses?|masterclass|workshops?/i;
@@ -584,12 +652,15 @@ function hasDegree(c: { text: string; url: string; guessed: boolean }): boolean 
 }
 
 /** Links worth following to reach the course list, best first. */
-function hubLinks(all: Link[], seen: Set<string>): Hub[] {
+function hubLinks(all: Link[], seen: Set<string>, home: string): Hub[] {
   const scores = new Map<string, number>();
   const faculties = new Set<string>();
   for (const l of all) {
+    // The graduate school's link matters only where it leads off the site — to
+    // grad.uw.edu from washington.edu. On the site, the level's own links get there.
+    const sisterSite = GRADUATE_SITE.test(l.text) && siteKey(new URL(l.url).hostname) !== home;
     // The address counts as well as the words: "Barcelona Courses" goes to /schedule/…
-    if (seen.has(l.url) || l.text.length > 60 || !isHubText(l.text)) continue;
+    if (seen.has(l.url) || l.text.length > 60 || !(isHubText(l.text) || FINDER_TEXT.test(l.text) || sisterSite)) continue;
     if (NOT_A_HUB.test(l.text) || NOT_A_HUB.test(new URL(l.url).pathname)) continue;
     let score = 1;
     // Sites write "A–Z" with every dash there is, non-breaking hyphens included.
@@ -598,6 +669,10 @@ function hubLinks(all: Link[], seen: Set<string>): Hub[] {
     // A level's landing page is often the only way to that level's list —
     // worth opening even after another level has turned up plenty.
     if (/^(undergraduate|postgraduate|graduate|taught|master'?s|masters|doctoral|phd|research degrees?)\b/i.test(l.text) || LEVEL_HUB_INTL.test(l.text)) {
+      score += STRONG_HUB;
+    } else if (sisterSite || FINDER_TEXT.test(l.text)) {
+      // "Learn more about graduate programs", "Find a Program": the way to a
+      // level's list, or the list itself.
       score += STRONG_HUB;
     }
     // Short, open and summer courses aren't degrees; they mustn't crowd out the
@@ -897,13 +972,51 @@ export async function findProgrammes(startUrl: string, onProgress?: (message: st
     audiences.set(key, prev === undefined || prev === audience ? audience : null);
   }
 
+  let renders = 0;
+
+  /**
+   * A school's graduate site often lives under another domain — washington.edu
+   * sends "Graduate School" to grad.uw.edu. A link that says it goes to the
+   * graduate school, or lands on a grad. host, makes that domain the school's too.
+   */
+  function adoptSisterSites(html: string, at: URL) {
+    for (const m of html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)) {
+      const href = m[1].match(/href\s*=\s*["']([^"'#][^"']*)["']/i)?.[1];
+      if (!href) continue;
+      let target: URL;
+      try {
+        target = new URL(href.replace(/&amp;/g, "&"), at);
+      } catch {
+        continue;
+      }
+      const key = siteKey(target.hostname);
+      if (!/^https?:$/.test(target.protocol) || sameSite(target, at) || alias.has(key)) continue;
+      const text = htmlToText(m[2]).replace(/\s+/g, " ").trim();
+      if (GRADUATE_SITE.test(text) || GRAD_HOST.test(target.hostname)) alias.add(key);
+    }
+  }
+
   /** Harvest a page; walk its pagination if it turned out to be a list. Returns hub links found. */
   async function harvest(page: { html: string; url: string }): Promise<Hub[]> {
+    let at = new URL(page.url);
+    adoptSisterSites(page.html, at);
+    let found = programmeLinks(links(contentOf(page.html), at, alias));
+    // A course finder that builds its list in the browser: nothing in the
+    // HTML, everything once its scripts have run. Rendered, it's read like
+    // any other page — links, hubs and all.
+    if (found.length === 0 && renders < RENDER_BUDGET && looksScripted(page.html)) {
+      renders++;
+      onProgress?.("Opening a course finder that needs a browser");
+      const rendered = await renderPage(page.url);
+      if (rendered) {
+        page = rendered;
+        at = new URL(page.url);
+        found = programmeLinks(links(contentOf(page.html), at, alias));
+      }
+    }
     noteAudience(page);
-    const at = new URL(page.url);
-    const found = programmeLinks(links(contentOf(page.html), at, alias));
     add(found);
-    const hubs = hubLinks(links(page.html, at, alias), seen);
+    const hubs = hubLinks(links(page.html, at, alias), seen, siteKey(new URL(root.url).hostname));
 
     if (found.length > 0) {
       let pagers = pagerLinks(links(page.html, at, alias), at, seen);
@@ -1051,6 +1164,9 @@ export async function findProgrammes(startUrl: string, onProgress?: (message: st
     // A name read off an address that's a single short word is an acronym
     // nobody can pick from: Prešov's "/phd/cavv" → "Cavv".
     if (p.nameFromUrl && !plain.includes(" ") && plain.length <= 5) return false;
+    // Ways to take classes without being on the degree — UW lists a "- GNM"
+    // (graduate non-matriculated) and a "Visiting Grad" beside most programmes.
+    if (NOT_ENROLMENT.test(p.name)) return false;
     const stem = u.pathname.replace(/\/$/, "").replace(/[-_]?\d+$/, "");
     const key = `${u.hostname}${stem}|${plain}`;
     if (seenCourse.has(key)) return false;

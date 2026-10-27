@@ -84,7 +84,9 @@ support `json_schema`, the backend notices once and falls back to prompting.
    courses-shaped path, usually with a degree in the text. It reads the pasted
    page, steps into course-list pages it links to ("Degree programmes A–Z"),
    walks paginated lists, and falls back to the sitemap when the HTML is thin.
-   Each picked programme then goes through the steps below as its own entry,
+   A course finder that builds its list with JavaScript (UW's graduate
+   directory, BU's program search) is opened in a headless browser instead —
+   see [`lib/render.ts`](lib/render.ts). Each picked programme then goes through the steps below as its own entry,
    one at a time so free tiers and local models aren't swamped. A single course
    link is recognised as one and offered for reading straight away.
 
@@ -128,7 +130,10 @@ support `json_schema`, the backend notices once and falls back to prompting.
   rather than impersonating Chrome — several university WAFs (DAAD among them)
   return `403` specifically to Chrome user-agents that don't complete a browser
   handshake, while allowing plain agents through. If a site still refuses, the
-  fetcher retries once as Firefox before giving up.
+  fetcher retries once as Firefox, then loads the page in the headless browser
+  (utoronto.ca only lets that in). A site that challenges the browser too —
+  Cloudflare's "Just a moment…", as at umich.edu — stays refused; the app
+  doesn't try to get past bot checks.
 - **Aggregator sites only get you so far.** On a directory like DAAD, the real
   application detail lives on the university's own site, and those links are
   off-host so they aren't followed. Expect a thinner brief; paste the
@@ -137,9 +142,12 @@ support `json_schema`, the backend notices once and falls back to prompting.
   with no year. That's kept and displayed, but left off the calendar rather
   than guessed at, so those entries don't sort by urgency.
 - **Programme lists built entirely in the browser** (search-only course
-  finders) have no links to find. The sitemap fallback recovers most of them,
-  with names read off the URL and marked `~`; if a site has neither, paste a
-  course link directly. Up to 20 programmes can be read in one go.
+  finders) have no links in their HTML. When a page looks like an app shell,
+  the finder opens it in a headless browser — Chrome or Edge, whichever is
+  installed, or the one `BROWSER_PATH` points at — up to three times a search.
+  With no browser available it falls back to the sitemap, with names read off
+  the URL and marked `~`; if a site has neither, paste a course link directly.
+  Up to 20 programmes can be read in one go.
 - **PDFs aren't read**, and some schools put entry requirements in one.
 - **Pages behind a login** can't be reached.
 - Saved schools live in one browser and won't follow you to another device.
@@ -157,6 +165,7 @@ lib/
   schema.ts                the extraction schema — the shape of the whole app
   scrape.ts                fetching, link ranking, HTML to text
   programmes.ts            programme discovery: course lists, pagination, sitemaps
+  render.ts                headless-browser fallback for JavaScript-built course lists
   events.ts                the SSE framing both routes and the client share
   extract/
     index.ts               picks the backend from EXTRACTOR

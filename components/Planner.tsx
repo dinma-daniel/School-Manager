@@ -1,18 +1,19 @@
 "use client";
 
 import { List, Scale, SquareKanban } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSchools } from "@/lib/storage";
 import { DEMO_SCHOOLS } from "@/lib/demo";
 import { countdown, nextDeadline, urgency } from "@/lib/dates";
 import { applyFilters, facets, feeRange, NO_FILTERS, type Filters } from "@/lib/filter";
-import { AddSchool } from "./AddSchool";
+import { AddSchool, type AddSchoolHandle } from "./AddSchool";
 import { SchoolEntry } from "./SchoolEntry";
 import { Compare } from "./Compare";
 import { SchoolBoard } from "./SchoolBoard";
 import { StickyNote } from "./StickyNote";
 import { HowItWorks } from "./HowItWorks";
 import { ScribbleArrow } from "./ScribbleArrow";
+import { Tour, useTourSeen } from "./Tour";
 import { SchoolFilters, useRates } from "./SchoolFilters";
 import styles from "./Planner.module.css";
 
@@ -25,6 +26,12 @@ export function Planner() {
   const { schools, ready, add, update, remove } = useSchools();
   const [view, setView] = useState<View>("planner");
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
+  /** The add form, which a saved course reopens to be swapped for another. */
+  const addRef = useRef<AddSchoolHandle>(null);
+  const [addBusy, setAddBusy] = useState(false);
+  const tour = useTourSeen();
+  // Once there's something saved to show round — and not while more is still being added.
+  const touring = ready && schools.length > 0 && !tour.seen && !addBusy;
 
   // Whatever closes soonest goes to the top — that's the whole job of a planner.
   // Left unmemoized on purpose: the React Compiler handles it, and a manual
@@ -81,13 +88,13 @@ export function Planner() {
         </header>
 
         <section className={`enter ${styles.add}`} style={order(5)}>
-          <AddSchool onAdd={add} />
+          <AddSchool ref={addRef} onAdd={add} onRemove={remove} onBusyChange={setAddBusy} />
         </section>
 
         {ready && schools.length > 0 && (
           <>
             {lede && (
-              <aside className={`enter ${styles.lede}`} style={order(6)}>
+              <aside className={`enter ${styles.lede}`} style={order(6)} data-tour="next-up">
                 <span className="eyebrow">Next up</span>
                 <p className={styles.ledeLine}>
                   <strong>{lede.school.info.name}</strong> — {lede.next.label.toLowerCase()} closes in{" "}
@@ -123,6 +130,7 @@ export function Planner() {
                 type="button"
                 className={styles.tab}
                 data-active={view === "board" || undefined}
+                data-tour="board"
                 onClick={() => setView("board")}
               >
                 <SquareKanban className={styles.tabIcon} size={14} strokeWidth={1.9} aria-hidden="true" />
@@ -132,6 +140,7 @@ export function Planner() {
                 type="button"
                 className={styles.tab}
                 data-active={view === "compare" || undefined}
+                data-tour="compare"
                 onClick={() => setView("compare")}
               >
                 <Scale className={styles.tabIcon} size={14} strokeWidth={1.9} aria-hidden="true" />
@@ -163,7 +172,13 @@ export function Planner() {
             ) : view === "planner" ? (
               <ul className={styles.rail}>
                 {shown.map((school) => (
-                  <SchoolEntry key={school.id} school={school} onUpdate={update} onRemove={remove} />
+                  <SchoolEntry
+                    key={school.id}
+                    school={school}
+                    onUpdate={update}
+                    onRemove={remove}
+                    onChangeCourse={(s) => addRef.current?.changeCourse(s)}
+                  />
                 ))}
               </ul>
             ) : view === "board" ? (
@@ -201,8 +216,23 @@ export function Planner() {
             Everything you save stays in this browser. Always check a deadline against the school&rsquo;s own page
             before you rely on it.
           </p>
+          {ready && schools.length > 0 && tour.seen && (
+            <button
+              type="button"
+              className={styles.tourAgain}
+              onClick={() => {
+                // The tour starts on the list, where most of what it points at lives.
+                setView("planner");
+                tour.replay();
+              }}
+            >
+              Show me around again
+            </button>
+          )}
         </footer>
       </div>
+
+      {touring && <Tour onDone={tour.markSeen} />}
     </main>
   );
 }
