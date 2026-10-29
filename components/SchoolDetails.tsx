@@ -232,7 +232,11 @@ export function SchoolDetails({ school, onUpdate, onRemove, layout = "stack" }: 
           <li key={i} className={styles.scholarship}>
             <div className={styles.scholarshipHead}>
               <strong>{s.name}</strong>
-              {s.amount && <span className={styles.amount}>{s.amount}</span>}
+              {s.amount && (
+                <span className={styles.amount} data-long={s.amount.length > 32 || undefined}>
+                  {s.amount}
+                </span>
+              )}
             </div>
             {s.eligibility && <p className={styles.scholarshipBody}><LinkedText text={s.eligibility} /></p>}
             <div className={styles.scholarshipFoot}>
