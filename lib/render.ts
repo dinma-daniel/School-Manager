@@ -25,6 +25,8 @@ const SETTLE_MS = 1_500;
 const IDLE_CLOSE_MS = 60_000;
 /** Pages rendering at once. A blocked site sends every fetch here, in batches. */
 const MAX_OPEN_PAGES = 3;
+/** After a browser fails to start, wait this long before trying again. */
+const RETRY_LAUNCH_MS = 30_000;
 
 let open = 0;
 const waiting: (() => void)[] = [];
@@ -83,7 +85,7 @@ async function launch(): Promise<Browser | null> {
       if (SERVERLESS || process.env.BROWSER_PATH) console.warn("[render] Browser failed to start:", err);
     }
   }
-  if (!warned) {
+  if (!warned || SERVERLESS) {
     warned = true;
     console.warn("[render] No browser available (set BROWSER_PATH) — JavaScript-built course lists won't be read.");
   }
@@ -125,7 +127,15 @@ export function looksScripted(html: string): boolean {
  * ("Just a moment…") is the site saying no, and we don't try to get past it.
  */
 export async function renderPage(url: string): Promise<{ html: string; url: string } | null> {
-  browser ??= launch();
+  if (!browser) {
+    const starting = launch();
+    browser = starting;
+    // A browser that wouldn't start isn't given up on for the life of the
+    // server: a warm instance tries again after a pause, and logs why again.
+    starting.then((b) => {
+      if (!b) setTimeout(() => browser === starting && (browser = null), RETRY_LAUNCH_MS);
+    });
+  }
   const running = await browser;
   if (!running) return null;
   keepAlive();
