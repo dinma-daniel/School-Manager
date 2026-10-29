@@ -50,6 +50,8 @@ const SERVERLESS = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION
 let browser: Promise<Browser | null> | null = null;
 let idleTimer: ReturnType<typeof setTimeout> | null = null;
 let warned = false;
+/** Browsers that can only be trusted with one page: closed after it, so the next render starts afresh. */
+const singleUse = new WeakSet<Browser>();
 
 async function launch(): Promise<Browser | null> {
   let chromium;
@@ -69,7 +71,14 @@ async function launch(): Promise<Browser | null> {
     // made for them, unpacked from node_modules on first use.
     try {
       const { default: bundled } = await import("@sparticuz/chromium");
-      attempts.push({ executablePath: await bundled.executablePath(), args: bundled.args });
+      const executablePath = await bundled.executablePath();
+      // Its defaults are for screenshotting trusted pages. These pages aren't
+      // trusted, so web security stays on; and Playwright hangs on the second
+      // page in a --single-process browser, so that's only the fallback.
+      const args = bundled.args.filter(
+        (a) => !/^--(disable-web-security|allow-running-insecure-content|single-process|headless)\b/.test(a),
+      );
+      attempts.push({ executablePath, args }, { executablePath, args: [...args, "--single-process"] });
     } catch (err) {
       console.warn("[render] Couldn't unpack the bundled Chromium:", err);
     }
@@ -81,6 +90,7 @@ async function launch(): Promise<Browser | null> {
       const launched = await chromium.launch({ ...options, headless: true });
       // A browser that crashes or is closed isn't kept for the next request.
       launched.on("disconnected", () => forget(launched));
+      if (options?.args?.includes("--single-process")) singleUse.add(launched);
       return launched;
     } catch (err) {
       // Not installed under that name; try the next. On a server there's
@@ -162,6 +172,10 @@ export async function renderPage(url: string): Promise<{ html: string; url: stri
   } finally {
     clearTimeout(timer);
     await context?.close().catch(() => {});
+    if (singleUse.has(running)) {
+      await forget(running);
+      await running.close().catch(() => {});
+    }
     release();
     keepAlive();
   }
