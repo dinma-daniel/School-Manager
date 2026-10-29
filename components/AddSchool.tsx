@@ -28,7 +28,7 @@ export type AddSchoolHandle = {
 };
 
 /** The course being swapped out, while its replacement is picked and read. */
-type Replacing = Pick<SavedSchool, "id" | "status" | "note"> & { name: string };
+type Replacing = { id: string; name: string };
 
 /**
  * Phone width, the same 640px the layout breaks at. The placeholder can't be
@@ -53,13 +53,14 @@ const accessOf = (err: unknown) => (err instanceof StreamError ? err.access : un
 
 type Props = {
   onAdd: (school: SavedSchool) => void;
-  onRemove: (id: string) => void;
+  /** Put a newly read course in place of a saved one, keeping the saved one's stage and note. */
+  onReplace: (oldId: string, school: SavedSchool) => void;
   /** Told when a search or read starts and stops, so nothing opens over it. */
   onBusyChange?: (busy: boolean) => void;
   ref?: React.Ref<AddSchoolHandle>;
 };
 
-export function AddSchool({ onAdd, onRemove, onBusyChange, ref }: Props) {
+export function AddSchool({ onAdd, onReplace, onBusyChange, ref }: Props) {
   const [url, setUrl] = useState("");
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
   const [access, setAccess] = useState<AccessIssue[] | null>(null);
@@ -85,8 +86,7 @@ export function AddSchool({ onAdd, onRemove, onBusyChange, ref }: Props) {
   /** One full extraction, saved as its own entry — in place of the course being changed, if there is one. */
   async function readOne(target: Target, onStatus: (message: string) => void, signal: AbortSignal) {
     const result = await postForResult<DoneEvent>("/api/extract", { url: target.url }, onStatus, signal);
-    const swap = replacingRef.current;
-    onAdd({
+    const school: SavedSchool = {
       id: crypto.randomUUID(),
       sourceUrl: target.url,
       pagesRead: result.pagesRead,
@@ -95,15 +95,18 @@ export function AddSchool({ onAdd, onRemove, onBusyChange, ref }: Props) {
       // The model sometimes leaves the programme out when the page assumes it;
       // the user picked it by name, so we know it.
       info: target.name && !result.info.programme ? { ...result.info, programme: target.name } : result.info,
-      // A changed course keeps where the user had got to with it.
-      status: swap?.status ?? "considering",
-      note: swap?.note ?? "",
+      status: "considering",
+      note: "",
       pickedFrom: target.pickedFrom,
-    });
-    // Only once the replacement is safely saved does the old one go.
+    };
+    // Only a course picked from the list takes the old one's place — never
+    // "Read this page anyway" — and only once it's safely read.
+    const swap = target.pickedFrom ? replacingRef.current : null;
     if (swap) {
-      onRemove(swap.id);
+      onReplace(swap.id, school);
       setReplacing(null);
+    } else {
+      onAdd(school);
     }
   }
 
@@ -206,6 +209,8 @@ export function AddSchool({ onAdd, onRemove, onBusyChange, ref }: Props) {
         setPhase({ kind: "finding", status }),
       );
     } catch (err) {
+      // No list to pick from, so no change of course either: the old one stays.
+      setReplacing(null);
       const blocked = accessOf(err);
       if (blocked) {
         setPhase({ kind: "idle" });
@@ -219,7 +224,10 @@ export function AddSchool({ onAdd, onRemove, onBusyChange, ref }: Props) {
     if (list.programmes.length > 0) {
       listCache.current = { sourceUrl: trimmed, list };
       setPhase({ kind: "picking", list, sourceUrl: trimmed });
-    } else if (list.startIsProgramme) {
+      return;
+    }
+    setReplacing(null);
+    if (list.startIsProgramme) {
       await readAll([{ url: trimmed }]);
     } else {
       // Don't quietly read a homepage or an admissions overview: the brief
@@ -237,7 +245,7 @@ export function AddSchool({ onAdd, onRemove, onBusyChange, ref }: Props) {
     changeCourse(school) {
       const from = school.pickedFrom;
       if (!from || working) return;
-      setReplacing({ id: school.id, status: school.status, note: school.note, name: school.info.programme ?? school.info.name });
+      setReplacing({ id: school.id, name: school.info.programme ?? school.info.name });
       setUrl(from);
       rootRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       const cached = listCache.current;

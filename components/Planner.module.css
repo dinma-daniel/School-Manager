@@ -16,14 +16,6 @@
 
 /* Header ----------------------------------------------------------------- */
 
-.headerTop {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2.25rem;
-}
-
 .title {
   font-size: clamp(1.75rem, 5.5vw, 2.4rem);
   letter-spacing: -0.03em;
@@ -237,23 +229,6 @@
   transform: translateY(-1px) rotate(-1deg);
 }
 
-.demoButton {
-  justify-self: start;
-  margin-top: 0.4rem;
-  padding: 0.4rem 0.8rem;
-  border: 1px solid var(--keyline);
-  border-radius: 6px;
-  background: transparent;
-  color: var(--body);
-  font-size: 13px;
-  transition: border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
-}
-
-.demoButton:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
 .sampleNote {
   margin-top: 1.5rem;
   padding: 0.6rem 0.8rem;
@@ -310,7 +285,7 @@
 }
 
 /* ===========================================================================
- * Styles under review (see app/ui-styles.css). Decoration is hidden unless
+ * Pleurat overrides (the default look; see app/ui-styles.css). Decoration is hidden unless
  * its style is on.
  * ======================================================================== */
 

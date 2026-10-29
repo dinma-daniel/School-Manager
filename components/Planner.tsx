@@ -3,7 +3,7 @@
 import { List, Scale, SquareKanban } from "lucide-react";
 import { useRef, useState } from "react";
 import { useSchools } from "@/lib/storage";
-import { DEMO_SCHOOLS } from "@/lib/demo";
+import { demoSchools } from "@/lib/demo";
 import { countdown, nextDeadline, urgency } from "@/lib/dates";
 import { applyFilters, facets, feeRange, NO_FILTERS, type Filters } from "@/lib/filter";
 import { AddSchool, type AddSchoolHandle } from "./AddSchool";
@@ -23,7 +23,7 @@ type View = "planner" | "board" | "compare";
 const order = (i: number) => ({ "--i": i }) as React.CSSProperties;
 
 export function Planner() {
-  const { schools, ready, add, update, remove } = useSchools();
+  const { schools, ready, add, update, remove, replace } = useSchools();
   const [view, setView] = useState<View>("planner");
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   /** The add form, which a saved course reopens to be swapped for another. */
@@ -54,7 +54,7 @@ export function Planner() {
 
   return (
     <main className={styles.page}>
-      {/* Decoration for the styles under review; each hides unless its style is on. */}
+      {/* Pleurat decoration; hidden in the classic look. */}
       {ready && (
         <span className={styles.ghost} aria-hidden="true">
           {String(schools.length).padStart(2, "0")}
@@ -88,7 +88,7 @@ export function Planner() {
         </header>
 
         <section className={`enter ${styles.add}`} style={order(5)}>
-          <AddSchool ref={addRef} onAdd={add} onRemove={remove} onBusyChange={setAddBusy} />
+          <AddSchool ref={addRef} onAdd={add} onReplace={replace} onBusyChange={setAddBusy} />
         </section>
 
         {ready && schools.length > 0 && (
@@ -203,7 +203,7 @@ export function Planner() {
             </StickyNote>
             <StickyNote color="yellow" tilt={3} index={1} className={styles.emptyNote}>
               <p className="hand">Just looking around? Load two samples and poke at them.</p>
-              <button type="button" className={styles.noteButton} onClick={() => DEMO_SCHOOLS.forEach(add)}>
+              <button type="button" className={styles.noteButton} onClick={() => demoSchools().forEach(add)}>
                 Load samples
               </button>
             </StickyNote>

@@ -139,7 +139,7 @@
 }
 
 /* ===========================================================================
- * Styles under review (see app/ui-styles.css).
+ * Pleurat overrides (the default look; see app/ui-styles.css).
  * ======================================================================== */
 
 :global([data-ui="pleurat"]) .dialog {
