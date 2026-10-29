@@ -64,6 +64,8 @@ const MAX_RESULTS = 1_200;
 const SITEMAP_BYTES = 8_000_000;
 /** Pages to open in a browser, for lists built with JavaScript. Each takes seconds. */
 const RENDER_BUDGET = 3;
+/** Other domains a search may take as the school's own (its graduate school's, say). */
+const MAX_SISTER_SITES = 2;
 /** Section sitemaps to try: the pasted link's section and those of the best course lists. */
 const MAX_SECTIONS = 3;
 /** A path segment that's a language folder ("/fr/", "/zh-hans/"), not part of the site's structure. */
@@ -973,6 +975,8 @@ export async function findProgrammes(startUrl: string, onProgress?: (message: st
   }
 
   let renders = 0;
+  const home = siteKey(new URL(root.url).hostname);
+  let adopted = 0;
 
   /**
    * A school's graduate site often lives under another domain — washington.edu
@@ -980,6 +984,9 @@ export async function findProgrammes(startUrl: string, onProgress?: (message: st
    * graduate school, or lands on a grad. host, makes that domain the school's too.
    */
   function adoptSisterSites(html: string, at: URL) {
+    // Only the school's own pages vouch for a sister site — not a site adopted
+    // already, or a partner's link could chain in a different university.
+    if (siteKey(at.hostname) !== home || adopted >= MAX_SISTER_SITES) return;
     for (const m of html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)) {
       const href = m[1].match(/href\s*=\s*["']([^"'#][^"']*)["']/i)?.[1];
       if (!href) continue;
@@ -992,7 +999,11 @@ export async function findProgrammes(startUrl: string, onProgress?: (message: st
       const key = siteKey(target.hostname);
       if (!/^https?:$/.test(target.protocol) || sameSite(target, at) || alias.has(key)) continue;
       const text = htmlToText(m[2]).replace(/\s+/g, " ").trim();
-      if (GRADUATE_SITE.test(text) || GRAD_HOST.test(target.hostname)) alias.add(key);
+      // Both: it says it's the graduate school, and it lands on a grad. host.
+      if (GRADUATE_SITE.test(text) && GRAD_HOST.test(target.hostname)) {
+        alias.add(key);
+        if (++adopted >= MAX_SISTER_SITES) return;
+      }
     }
   }
 
@@ -1007,7 +1018,8 @@ export async function findProgrammes(startUrl: string, onProgress?: (message: st
     if (found.length === 0 && renders < RENDER_BUDGET && looksScripted(page.html)) {
       renders++;
       onProgress?.("Opening a course finder that needs a browser");
-      const rendered = await renderPage(page.url);
+      // A render that fails costs this one page, never the whole search.
+      const rendered = await renderPage(page.url).catch(() => null);
       if (rendered) {
         page = rendered;
         at = new URL(page.url);
@@ -1016,7 +1028,7 @@ export async function findProgrammes(startUrl: string, onProgress?: (message: st
     }
     noteAudience(page);
     add(found);
-    const hubs = hubLinks(links(page.html, at, alias), seen, siteKey(new URL(root.url).hostname));
+    const hubs = hubLinks(links(page.html, at, alias), seen, home);
 
     if (found.length > 0) {
       let pagers = pagerLinks(links(page.html, at, alias), at, seen);

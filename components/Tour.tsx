@@ -190,6 +190,19 @@ export function Tour({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     if (!started) return;
     const onKey = (e: KeyboardEvent) => {
+      // Tab stays in the card: the page behind is dimmed and can't be used mid-tour.
+      if (e.key === "Tab") {
+        const buttons = [...(cardRef.current?.querySelectorAll<HTMLElement>("button") ?? [])];
+        if (buttons.length === 0) return;
+        const at = buttons.indexOf(document.activeElement as HTMLElement);
+        const to = e.shiftKey ? (at <= 0 ? buttons.length - 1 : at - 1) : at === buttons.length - 1 ? 0 : at + 1;
+        e.preventDefault();
+        buttons[to].focus();
+        return;
+      }
+      // Arrows in a text box move the cursor, not the tour.
+      const el = e.target as HTMLElement | null;
+      if (el?.closest("input, textarea, select, [contenteditable='true']")) return;
       if (e.key === "Escape") onDone();
       else if (e.key === "ArrowRight") next();
       else if (e.key === "ArrowLeft") back();

@@ -7,8 +7,11 @@ import type { SavedSchool } from './schema';
  * The institutions are real; the figures are illustrative and were NOT
  * extracted from their websites. Every entry is flagged `demo` and renders a
  * SAMPLE badge, so nothing here can be mistaken for a checked fact.
+ *
+ * Written for the 2026–27 cycle; `demoSchools()` moves them on a year at a
+ * time so a sample never opens with its deadlines already gone.
  */
-export const DEMO_SCHOOLS: SavedSchool[] = [
+const DEMO_SCHOOLS: SavedSchool[] = [
   {
     id: "demo-sheffield",
     demo: true,
@@ -122,4 +125,21 @@ export const DEMO_SCHOOLS: SavedSchool[] = [
       notFound: ["Deadlines for transfer applicants", "Whether the tuition figures include mandatory fees"],
     },
   },
-];;
+];
+
+/** The earliest deadline in the samples as written: UT Austin's priority date. */
+const FIRST_DEADLINE = "2026-11-01";
+
+/** Every year mentioned — dates, intakes, "starting September 2026", course addresses — moved on by `by`. */
+function shiftYears<T>(value: T, by: number): T {
+  if (by === 0) return value;
+  return JSON.parse(JSON.stringify(value).replace(/\b(20\d\d)\b/g, (year) => String(Number(year) + by)));
+}
+
+/** The samples, moved on whole years until their first deadline is still ahead. */
+export function demoSchools(today = new Date()): SavedSchool[] {
+  const first = new Date(FIRST_DEADLINE);
+  let by = 0;
+  while (new Date(first).setFullYear(first.getFullYear() + by) < today.getTime()) by++;
+  return shiftYears(DEMO_SCHOOLS, by);
+}

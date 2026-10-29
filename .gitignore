@@ -45,3 +45,9 @@ next-env.d.ts
 
 # per-style dev builds (UI comparison)
 /.next-*/
+
+# dev-server logs from the per-style builds
+/.next-*.log
+
+# Claude Code's local preview config
+/.claude/launch.json

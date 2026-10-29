@@ -99,5 +99,17 @@ export function useSchools() {
 
   const remove = useCallback((id: string) => write(getSnapshot().filter((s) => s.id !== id)), []);
 
-  return { schools, ready, add, update, remove };
+  /**
+   * Swap a saved course for another, keeping the stage and note the old one
+   * has *now* — the user may have changed them while the new one was read.
+   * If the old one has gone meanwhile, the new one is simply added.
+   */
+  const replace = useCallback((oldId: string, school: SavedSchool) => {
+    const current = getSnapshot();
+    const old = current.find((s) => s.id === oldId);
+    const next = old ? { ...school, status: old.status, note: old.note } : school;
+    write([next, ...current.filter((s) => s.id !== oldId && s.id !== school.id)]);
+  }, []);
+
+  return { schools, ready, add, update, remove, replace };
 }

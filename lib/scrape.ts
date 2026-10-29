@@ -8,6 +8,9 @@
  * hand the model everything at once.
  */
 
+import { lookup } from "node:dns/promises";
+import { isIP } from "node:net";
+
 const PAGE_BUDGET = 4; // extra pages beyond the one the user pasted
 const MAX_BYTES = 2_000_000;
 const DEFAULT_MAX_CHARS = 120_000;
@@ -24,6 +27,8 @@ const ADMISSIONS_SIGNALS = [
   /qualification|grades|transcript|personal statement/i,
 ];
 const FETCH_TIMEOUT_MS = 15_000;
+/** Hops a link may redirect through before we give up on it. */
+const MAX_REDIRECTS = 8;
 
 /**
  * Who we say we are.
@@ -124,16 +129,59 @@ export function validateUrl(raw: string): URL {
   if (url.protocol !== "http:" && url.protocol !== "https:") {
     throw new ScrapeError("Only http and https links can be read.");
   }
-  const host = url.hostname.toLowerCase();
+  const host = url.hostname.toLowerCase().replace(/^\[|\]$/g, "");
   const isPrivate =
     host === "localhost" ||
+    host.endsWith(".localhost") ||
     host.endsWith(".local") ||
-    !host.includes(".") ||
-    /^(127\.|10\.|192\.168\.|169\.254\.|0\.)/.test(host) ||
-    /^172\.(1[6-9]|2\d|3[01])\./.test(host) ||
-    host === "[::1]";
+    host.endsWith(".internal") ||
+    (!host.includes(".") && !host.includes(":")) ||
+    (isIP(host) !== 0 && privateIp(host));
   if (isPrivate) throw new ScrapeError("That address isn't a public website.");
   return url;
+}
+
+/** Loopback, private, link-local, carrier-grade NAT, multicast and the like — anything not on the public internet. */
+function privateIp(ip: string): boolean {
+  if (isIP(ip) === 6) {
+    const v6 = ip.toLowerCase();
+    const mapped = v6.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/)?.[1];
+    if (mapped) return privateIp(mapped);
+    // ::ffff:7f00:1 is 127.0.0.1 written in hex.
+    const hexMapped = v6.match(/^::ffff:([0-9a-f]{1,4}):([0-9a-f]{1,4})$/);
+    if (hexMapped) {
+      const [hi, lo] = [parseInt(hexMapped[1], 16), parseInt(hexMapped[2], 16)];
+      return privateIp(`${hi >> 8}.${hi & 255}.${lo >> 8}.${lo & 255}`);
+    }
+    return v6 === "::" || v6 === "::1" || /^(fc|fd|fe[89ab]|ff)/.test(v6);
+  }
+  const [a, b] = ip.split(".").map(Number);
+  return (
+    a === 0 || a === 10 || a === 127 || a >= 224 ||
+    (a === 100 && b >= 64 && b <= 127) ||
+    (a === 169 && b === 254) ||
+    (a === 172 && b >= 16 && b <= 31) ||
+    (a === 192 && b === 168)
+  );
+}
+
+/**
+ * The full check, for every address actually fetched — redirects and the
+ * requests a rendered page makes included, not just the link the user pasted.
+ * Looks the name up, so a public-looking hostname that points at a private
+ * address is refused too.
+ */
+export async function assertPublic(url: URL): Promise<void> {
+  validateUrl(url.toString());
+  const host = url.hostname.replace(/^\[|\]$/g, "");
+  if (isIP(host)) return; // A literal address was checked above.
+  let addresses: string[];
+  try {
+    addresses = (await lookup(host, { all: true })).map((a) => a.address);
+  } catch {
+    return; // Unresolvable: the fetch itself will fail and say so.
+  }
+  if (addresses.some(privateIp)) throw new ScrapeError("That address isn't a public website.");
 }
 
 /** Certificate faults: expired, issued for another name, missing a link in the chain, self-signed… */
@@ -272,6 +320,8 @@ export async function fetchPage(url: string, options: FetchOptions = {}): Promis
     if (!(err instanceof AccessError) || err.kind !== "blocked" || options.allowXml) throw err;
     const page = await viaBrowser(url);
     if (!page) throw err;
+    // Kept small on a long-running server: forgetting a host only costs one refused fetch.
+    if (browserOnly.size >= 500) browserOnly.clear();
     browserOnly.add(host);
     return page;
   }
@@ -290,15 +340,26 @@ async function fetchDirect(url: string, options: FetchOptions = {}, uaIndex = 0)
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
-    const res = await fetch(url, {
-      signal: controller.signal,
-      redirect: "follow",
-      headers: {
-        "user-agent": UA_LADDER[uaIndex],
-        accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-        "accept-language": "en-GB,en;q=0.9",
-      },
-    });
+    // Redirects are followed by hand, one hop at a time, so each address is
+    // checked before it's fetched — a public page can redirect to an internal one.
+    let landed = url;
+    let res: Response;
+    for (let hop = 0; ; hop++) {
+      await assertPublic(new URL(landed));
+      res = await fetch(landed, {
+        signal: controller.signal,
+        redirect: "manual",
+        headers: {
+          "user-agent": UA_LADDER[uaIndex],
+          accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          "accept-language": "en-GB,en;q=0.9",
+        },
+      });
+      const location = res.status >= 300 && res.status < 400 ? res.headers.get("location") : null;
+      if (!location) break;
+      if (hop >= MAX_REDIRECTS) throw new ScrapeError("That link redirects too many times.");
+      landed = new URL(location, landed).toString();
+    }
 
     // A refusal is often about who we said we were, not the page itself.
     if ((res.status === 403 || res.status === 401) && uaIndex + 1 < UA_LADDER.length) {
@@ -306,7 +367,6 @@ async function fetchDirect(url: string, options: FetchOptions = {}, uaIndex = 0)
       return fetchDirect(url, options, uaIndex + 1);
     }
 
-    const landed = res.url || url;
     if (res.status === 401) throw new AccessError("login", landed);
     if (res.status === 403 || (res.status === 503 && res.headers.get("server")?.includes("cloudflare"))) {
       throw new AccessError("blocked", landed);

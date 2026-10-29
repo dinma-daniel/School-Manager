@@ -76,6 +76,35 @@ Other endpoints work the same way — Hugging Face
 (`https://router.huggingface.co/v1`), OpenRouter, LM Studio. If a model doesn't
 support `json_schema`, the backend notices once and falls back to prompting.
 
+## Deploying
+
+The app needs a Node server — its API routes do the reading — so static hosts
+like GitHub Pages can't run it. Keep the code on GitHub and connect a host that
+redeploys on every push.
+
+**Vercel** (free, simplest):
+
+1. Push the repo to GitHub, then on [vercel.com](https://vercel.com) choose
+   _Add New → Project_ and import it. The Next.js defaults are right.
+2. Under _Environment Variables_, add the backend settings from
+   `.env.local.example`. `ollama` can't run there, so use `openai` (Groq's free
+   tier works) or `claude`:
+   `EXTRACTOR`, `EXTRACTOR_BASE_URL`, `EXTRACTOR_MODEL`, `EXTRACTOR_API_KEY`,
+   `EXTRACTOR_MAX_CHARS`, `EXTRACTOR_MAX_PAGES`.
+3. Deploy. Every later `git push` to `main` redeploys.
+
+Two things differ from running it locally:
+
+- **No headless browser.** Vercel has no Chrome, so the fallback for
+  JavaScript-built course lists and browser-only sites switches itself off.
+  Most schools are unaffected; UW's graduate directory and utoronto.ca find
+  fewer or nothing. To keep it, host on something that runs a container with
+  Chromium (Render, Railway, Fly.io) and set `BROWSER_PATH` to it.
+- **Your key is shared by every visitor.** Each programme read spends your
+  model allowance — on Groq's free tier, roughly one read a minute across
+  everyone. Watch usage after sharing the link, and prefer a key with a
+  spending cap.
+
 ## How it works
 
 0. **Find programmes** — [`lib/programmes.ts`](lib/programmes.ts) turns a school
@@ -126,14 +155,15 @@ support `json_schema`, the backend notices once and falls back to prompting.
 - **JavaScript-rendered pages** (course finders, applicant portals) return an
   empty shell to a plain fetch. These are detected and refused with an
   explanation rather than guessed at.
-- **Some sites refuse non-browser traffic.** We identify ourselves honestly
-  rather than impersonating Chrome — several university WAFs (DAAD among them)
-  return `403` specifically to Chrome user-agents that don't complete a browser
-  handshake, while allowing plain agents through. If a site still refuses, the
-  fetcher retries once as Firefox, then loads the page in the headless browser
-  (utoronto.ca only lets that in). A site that challenges the browser too —
-  Cloudflare's "Just a moment…", as at umich.edu — stays refused; the app
-  doesn't try to get past bot checks.
+- **Some sites refuse non-browser traffic.** The fetcher first names itself
+  plainly (`ApplicationPlanner/1.0`, a student project reading public pages) —
+  several university WAFs (DAAD among them) let that through while refusing
+  Chrome user-agents that don't complete a browser handshake. If a site still
+  refuses, it retries once with a Firefox user-agent, then once in a real
+  headless browser (utoronto.ca only lets that in). It reads only public pages,
+  one search at a time, within a fixed page budget. A site that challenges the
+  browser too — Cloudflare's "Just a moment…", as at umich.edu — stays refused:
+  the app doesn't try to get past bot checks, and says so.
 - **Aggregator sites only get you so far.** On a directory like DAAD, the real
   application detail lives on the university's own site, and those links are
   off-host so they aren't followed. Expect a thinner brief; paste the
