@@ -6,11 +6,12 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   // Drive a browser binary; bundling them breaks their own module loading.
   serverExternalPackages: ["playwright-core", "@sparticuz/chromium"],
-  // The serverless Chromium is unpacked at run time from these compressed
-  // files, which nothing imports — so tracing alone would leave them behind.
+  // Files read at run time rather than imported, so tracing alone leaves them
+  // behind: the serverless Chromium's compressed binaries, and playwright-core's
+  // browsers.json (without it, playwright-core won't even load).
   outputFileTracingIncludes: {
-    "/api/programmes": ["./node_modules/@sparticuz/chromium/bin/**"],
-    "/api/extract": ["./node_modules/@sparticuz/chromium/bin/**"],
+    "/api/programmes": ["./node_modules/@sparticuz/chromium/bin/**", "./node_modules/playwright-core/**"],
+    "/api/extract": ["./node_modules/@sparticuz/chromium/bin/**", "./node_modules/playwright-core/**"],
   },
   // next dev refuses its dev-only resources (HMR, client runtime) to any
   // origin but localhost, so the page never hydrates through a tunnel.

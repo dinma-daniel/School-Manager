@@ -38,7 +38,9 @@
     ".next-pleurat/types/**/*.ts",
     ".next-pleurat/dev/types/**/*.ts",
     ".next-classic/types/**/*.ts",
-    ".next-classic/dev/types/**/*.ts"
+    ".next-classic/dev/types/**/*.ts",
+    ".next-trace/types/**/*.ts",
+    ".next-trace/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
