@@ -5,9 +5,10 @@
  *
  * A fallback, not the default: a render takes seconds where a fetch takes a
  * fraction of one, so it's only used on pages that look like an app shell, or
- * that turn away plain fetches. It drives a browser already on the machine —
- * Chrome, then Edge, or whatever BROWSER_PATH names — rather than downloading
- * one. With none to be found it stays off, and the app reads plain HTML as before.
+ * that turn away plain fetches. Locally it drives a browser already on the
+ * machine — Chrome, then Edge, or whatever BROWSER_PATH names. On Vercel, which
+ * has none, it uses @sparticuz/chromium, a Chromium build made for serverless.
+ * With no browser at all it stays off, and the app reads plain HTML as before.
  *
  * The page's own scripts run, so every request it makes is checked the same
  * way a pasted link is: nothing reaches a private or internal address.
@@ -41,6 +42,9 @@ function slot(): Promise<() => void> {
   return new Promise((resolve) => waiting.push(() => resolve(release)));
 }
 
+/** Running on Vercel or AWS Lambda, where the bundled serverless Chromium is the only browser. */
+const SERVERLESS = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+
 let browser: Promise<Browser | null> | null = null;
 let idleTimer: ReturnType<typeof setTimeout> | null = null;
 let warned = false;
@@ -52,22 +56,36 @@ async function launch(): Promise<Browser | null> {
   } catch {
     return null; // Not installed: the fallback is simply off.
   }
-  const attempts = process.env.BROWSER_PATH
-    ? [{ executablePath: process.env.BROWSER_PATH }]
-    : [{ channel: "chrome" }, { channel: "msedge" }];
+  const attempts: Parameters<typeof chromium.launch>[0][] = [];
+  if (process.env.BROWSER_PATH) {
+    attempts.push({ executablePath: process.env.BROWSER_PATH });
+  } else if (SERVERLESS) {
+    // Vercel and Lambda have no browser of their own: use the Chromium build
+    // made for them, unpacked from node_modules on first use.
+    try {
+      const { default: bundled } = await import("@sparticuz/chromium");
+      attempts.push({ executablePath: await bundled.executablePath(), args: bundled.args });
+    } catch (err) {
+      console.warn("[render] Couldn't unpack the bundled Chromium:", err);
+    }
+  } else {
+    attempts.push({ channel: "chrome" }, { channel: "msedge" });
+  }
   for (const options of attempts) {
     try {
       const launched = await chromium.launch({ ...options, headless: true });
       // A browser that crashes or is closed isn't kept for the next request.
       launched.on("disconnected", () => forget(launched));
       return launched;
-    } catch {
-      // Not installed under that name; try the next.
+    } catch (err) {
+      // Not installed under that name; try the next. On a server there's
+      // only one, so say why it wouldn't start — that's what the logs need.
+      if (SERVERLESS || process.env.BROWSER_PATH) console.warn("[render] Browser failed to start:", err);
     }
   }
   if (!warned) {
     warned = true;
-    console.warn("[render] No Chrome or Edge found (set BROWSER_PATH) — JavaScript-built course lists won't be read.");
+    console.warn("[render] No browser available (set BROWSER_PATH) — JavaScript-built course lists won't be read.");
   }
   return null;
 }

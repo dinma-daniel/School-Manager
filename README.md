@@ -95,11 +95,12 @@ redeploys on every push.
 
 Two things differ from running it locally:
 
-- **No headless browser.** Vercel has no Chrome, so the fallback for
-  JavaScript-built course lists and browser-only sites switches itself off.
-  Most schools are unaffected; UW's graduate directory and utoronto.ca find
-  fewer or nothing. To keep it, host on something that runs a container with
-  Chromium (Render, Railway, Fly.io) and set `BROWSER_PATH` to it.
+- **The headless browser is bundled.** Vercel has no Chrome, so there the
+  app uses `@sparticuz/chromium`, a Chromium build made for serverless, for
+  JavaScript-built course lists (UW's graduate directory) and browser-only
+  sites (utoronto.ca). If it ever fails to start, the reason is in the
+  function logs and searches carry on without it. Elsewhere, set
+  `BROWSER_PATH` to any Chromium-based browser.
 - **Your key is shared by every visitor.** Each programme read spends your
   model allowance — on Groq's free tier, roughly one read a minute across
   everyone. Watch usage after sharing the link, and prefer a key with a
