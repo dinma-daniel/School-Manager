@@ -55,8 +55,11 @@ async function launch(): Promise<Browser | null> {
   let chromium;
   try {
     ({ chromium } = await import("playwright-core"));
-  } catch {
-    return null; // Not installed: the fallback is simply off.
+  } catch (err) {
+    // Not installed: the fallback is simply off. On a server it should be
+    // there, so a failure means the deploy left part of it behind.
+    if (SERVERLESS) console.warn("[render] Couldn't load playwright-core:", err);
+    return null;
   }
   const attempts: Parameters<typeof chromium.launch>[0][] = [];
   if (process.env.BROWSER_PATH) {
